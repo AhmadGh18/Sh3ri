@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+/* ---------- Design tokens ---------- */
+:root {
+  --parchment:      #faf7f0;
+  --parchment-elev: #ffffff;
+  --parchment-soft: #f3ede0;
+  --ink:            #1c1a15;
+  --ink-muted:      #6b6555;
+  --ink-dim:        #8a836f;
+  --border:         #e8dfc9;
+  --border-strong:  #d6c9a5;
+  --wine:           #7a1e2a;
+  --wine-soft:      #f4e6e8;
+  --gold:           #b58b3a;
+  --gold-soft:      #f6ecd4;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --parchment:      #0f0f14;
+    --parchment-elev: #1a1a22;
+    --parchment-soft: #23222b;
+    --ink:            #ece7d9;
+    --ink-muted:      #a09a86;
+    --ink-dim:        #706b5c;
+    --border:         #2f2e39;
+    --border-strong:  #3d3c48;
+    --wine:           #d97985;
+    --wine-soft:      #2a1a1e;
+    --gold:           #e0b859;
+    --gold-soft:      #2b241a;
+  }
+}
+:root[data-theme="dark"] {
+  --parchment: #0f0f14; --parchment-elev: #1a1a22; --parchment-soft: #23222b;
+  --ink: #ece7d9; --ink-muted: #a09a86; --ink-dim: #706b5c;
+  --border: #2f2e39; --border-strong: #3d3c48;
+  --wine: #d97985; --wine-soft: #2a1a1e;
+  --gold: #e0b859; --gold-soft: #2b241a;
+}
+:root[data-theme="light"] {
+  --parchment: #faf7f0; --parchment-elev: #ffffff; --parchment-soft: #f3ede0;
+  --ink: #1c1a15; --ink-muted: #6b6555; --ink-dim: #8a836f;
+  --border: #e8dfc9; --border-strong: #d6c9a5;
+  --wine: #7a1e2a; --wine-soft: #f4e6e8;
+  --gold: #b58b3a; --gold-soft: #f6ecd4;
+}
+
+@theme inline {
+  --color-parchment:      var(--parchment);
+  --color-parchment-elev: var(--parchment-elev);
+  --color-parchment-soft: var(--parchment-soft);
+  --color-ink:            var(--ink);
+  --color-ink-muted:      var(--ink-muted);
+  --color-ink-dim:        var(--ink-dim);
+  --color-border:         var(--border);
+  --color-border-strong:  var(--border-strong);
+  --color-wine:           var(--wine);
+  --color-wine-soft:      var(--wine-soft);
+  --color-gold:           var(--gold);
+  --color-gold-soft:      var(--gold-soft);
+  --font-amiri: var(--font-amiri);
+  --font-cairo: var(--font-cairo);
+  --font-reem:  var(--font-reem);
+}
+
+body {
+  background: var(--parchment);
+  color: var(--ink);
+  font-family: var(--font-cairo), "Segoe UI", Tahoma, system-ui, sans-serif;
+  line-height: 1.65;
+}
+::selection { background: var(--gold-soft); color: var(--ink); }
+
+/* Utilities used by verse layouts */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Native <select> dropdown menu — style the options so dark mode isn't a
+   white-on-white / black-on-black mess. Chrome/Edge honour these; Firefox
+   partially; Safari mostly ignores (falls back to system). */
+.sh-filterbar select option {
+  background: var(--parchment-elev);
+  color: var(--ink);
+  padding: 6px 12px;
+}
+.sh-filterbar select option:checked {
+  background: var(--gold-soft);
+  color: var(--ink);
+  font-weight: 600;
+}
