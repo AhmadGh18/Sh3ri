@@ -1,0 +1,2181 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#faf7f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0f0f14" media="(prefers-color-scheme: dark)">
+  <title>شِعْري</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---------- Design tokens ---------- */
+    :root {
+      /* Parchment palette — warm, calm, print-inspired */
+      --bg:            #faf7f0;
+      --bg-elev:       #ffffff;
+      --bg-soft:       #f3ede0;
+      --border:        #e8dfc9;
+      --border-strong: #d6c9a5;
+      --text:          #1c1a15;
+      --text-muted:    #6b6555;
+      --text-dim:      #8a836f;
+      --accent:        #7a1e2a;    /* deep wine — traditional manuscript ink */
+      --accent-soft:   #f4e6e8;
+      --gold:          #b58b3a;    /* gilded ornament */
+      --gold-soft:     #f6ecd4;
+      --focus:         #7a1e2a;
+      --shadow-sm:     0 1px 2px rgba(28,26,21,.06);
+      --shadow-md:     0 4px 16px -4px rgba(28,26,21,.12);
+      --shadow-lg:     0 24px 48px -12px rgba(28,26,21,.25);
+      --radius-sm:     6px;
+      --radius-md:     10px;
+      --radius-lg:     16px;
+      --serif:         "Amiri", "Noto Naskh Arabic", "Traditional Arabic", Georgia, serif;
+      --sans:          "Cairo", "Segoe UI", "Tahoma", system-ui, sans-serif;
+      --display:       "Reem Kufi", "Amiri", "Segoe UI", serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:            #0f0f14;
+        --bg-elev:       #1a1a22;
+        --bg-soft:       #23222b;
+        --border:        #2f2e39;
+        --border-strong: #3d3c48;
+        --text:          #ece7d9;
+        --text-muted:    #a09a86;
+        --text-dim:      #706b5c;
+        --accent:        #d97985;    /* soft rose in dark */
+        --accent-soft:   #2a1a1e;
+        --gold:          #e0b859;
+        --gold-soft:     #2b241a;
+        --shadow-sm:     0 1px 2px rgba(0,0,0,.5);
+        --shadow-md:     0 4px 16px -4px rgba(0,0,0,.6);
+        --shadow-lg:     0 24px 48px -12px rgba(0,0,0,.7);
+      }
+    }
+    /* Manual overrides via data-theme (from toggle button) */
+    :root[data-theme="dark"] {
+      --bg: #0f0f14; --bg-elev: #1a1a22; --bg-soft: #23222b;
+      --border: #2f2e39; --border-strong: #3d3c48;
+      --text: #ece7d9; --text-muted: #a09a86; --text-dim: #706b5c;
+      --accent: #d97985; --accent-soft: #2a1a1e;
+      --gold: #e0b859; --gold-soft: #2b241a;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+      --shadow-md: 0 4px 16px -4px rgba(0,0,0,.6);
+      --shadow-lg: 0 24px 48px -12px rgba(0,0,0,.7);
+    }
+    :root[data-theme="light"] {
+      --bg: #faf7f0; --bg-elev: #ffffff; --bg-soft: #f3ede0;
+      --border: #e8dfc9; --border-strong: #d6c9a5;
+      --text: #1c1a15; --text-muted: #6b6555; --text-dim: #8a836f;
+      --accent: #7a1e2a; --accent-soft: #f4e6e8;
+      --gold: #b58b3a; --gold-soft: #f6ecd4;
+      --shadow-sm: 0 1px 2px rgba(28,26,21,.06);
+      --shadow-md: 0 4px 16px -4px rgba(28,26,21,.12);
+      --shadow-lg: 0 24px 48px -12px rgba(28,26,21,.25);
+    }
+
+    /* ---------- Base ---------- */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); text-decoration: none; transition: color .15s; }
+    a:hover { color: var(--text); text-decoration: underline; text-decoration-color: var(--gold); text-underline-offset: 4px; }
+    ::selection { background: var(--gold-soft); color: var(--text); }
+    button { font: inherit; cursor: pointer; }
+
+    /* ---------- Header ---------- */
+    header {
+      background: color-mix(in oklab, var(--bg) 85%, transparent);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 22px;
+      display: flex; align-items: center; gap: 18px;
+      position: sticky; top: 0; z-index: 20;
+    }
+    .brand {
+      font-family: var(--display);
+      font-size: 26px; font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0;
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .brand a { color: inherit; }
+    .brand a:hover { text-decoration: none; color: var(--accent); }
+    .brand .dot { color: var(--gold); font-size: 22px; }
+
+    header nav { display: flex; gap: 6px; margin-inline-start: 10px; flex-wrap: wrap; }
+    header nav a {
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 14px; font-weight: 500;
+    }
+    header nav a:hover {
+      background: var(--bg-soft); color: var(--text);
+      text-decoration: none;
+    }
+    header nav a.active {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .header-right {
+      margin-inline-start: auto;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .search-wrap {
+      display: flex; align-items: stretch;
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .search-wrap:focus-within {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px var(--gold-soft);
+    }
+    .search-wrap input {
+      background: transparent; border: 0; color: var(--text);
+      padding: 8px 14px; font: inherit; width: 240px;
+    }
+    .search-wrap input:focus { outline: none; }
+    .search-wrap select {
+      background: transparent; border: 0; color: var(--text-muted);
+      padding: 8px 10px; font: inherit; border-inline-end: 1px solid var(--border);
+    }
+    .search-wrap select:focus { outline: none; }
+    .search-wrap .icon-btn {
+      background: transparent; border: 0; padding: 6px 12px;
+      color: var(--text-muted);
+    }
+    .search-wrap .icon-btn:hover { color: var(--accent); }
+    .theme-toggle {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      width: 36px; height: 36px; border-radius: 999px;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: color .15s, border-color .15s, background .15s;
+    }
+    .theme-toggle:hover { color: var(--accent); border-color: var(--border-strong); }
+
+    /* ---------- Layout ---------- */
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 32px 22px 80px;
+    }
+    .breadcrumbs {
+      color: var(--text-muted); font-size: 13px;
+      margin-bottom: 14px;
+      display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    }
+    .breadcrumbs .sep { color: var(--text-dim); }
+    .breadcrumbs a { color: var(--text-muted); }
+    .breadcrumbs a:hover { color: var(--accent); }
+    .section-title {
+      display: flex; align-items: center; gap: 12px;
+      font-family: var(--display); font-weight: 700;
+      font-size: 22px; margin: 8px 0 18px; color: var(--text);
+    }
+    .section-title .ornament {
+      color: var(--gold); font-size: 18px; letter-spacing: 6px;
+    }
+    .section-hint { color: var(--text-muted); font-size: 14px; margin-inline-start: auto; font-weight: 400; font-family: var(--sans); }
+
+    /* ---------- Grids ---------- */
+    .grid { display: grid; gap: 14px; }
+    .grid.poets     { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+    .grid.poems     { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+    .grid.taxonomy  { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+    .grid.tiles     { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+
+    /* ---------- Cards ---------- */
+    .card {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: transform .18s, border-color .18s, box-shadow .18s, background .18s;
+      position: relative;
+    }
+    .card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .card .title {
+      font-family: var(--serif);
+      font-size: 18px; font-weight: 700;
+      color: var(--text); margin: 0 0 6px;
+      line-height: 1.5;
+    }
+    .card .sub {
+      color: var(--text-muted); font-size: 13px;
+      display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+    }
+    .card .meta {
+      color: var(--text-dim); font-size: 12px; margin-top: 10px;
+      display: flex; gap: 6px; align-items: center; flex-wrap: wrap;
+    }
+    .card.poem::before {
+      content: ""; position: absolute;
+      inset-inline-start: 0; top: 16px; bottom: 16px;
+      width: 3px; background: var(--gold); border-radius: 3px;
+      opacity: 0; transition: opacity .2s;
+    }
+    .card.poem:hover::before { opacity: 1; }
+
+    /* Chips */
+    .chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--bg-soft);
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 2px 10px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .chip.era      { background: var(--gold-soft); color: color-mix(in oklab, var(--gold) 70%, var(--text)); }
+    .chip.country  { background: var(--accent-soft); color: var(--accent); }
+    .chip.count    { background: transparent; padding: 2px 0; color: var(--text-dim); }
+
+    /* Tiles on home */
+    .tile {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 22px 20px;
+      cursor: pointer;
+      text-align: center;
+      transition: transform .18s, border-color .18s, box-shadow .18s;
+    }
+    .tile:hover { transform: translateY(-3px); border-color: var(--gold); box-shadow: var(--shadow-md); }
+    .tile .glyph {
+      display: block;
+      font-family: var(--display); color: var(--accent);
+      font-size: 34px; line-height: 1; margin-bottom: 10px;
+    }
+    .tile .name { font-family: var(--display); font-weight: 700; font-size: 17px; color: var(--text); }
+    .tile .desc { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      background: linear-gradient(160deg, var(--bg-soft), var(--bg-elev));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 44px 40px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "﴿"; position: absolute; inset-inline-end: -10px; top: -30px;
+      font-family: var(--serif); color: var(--gold); opacity: .13;
+      font-size: 240px; line-height: 1; pointer-events: none;
+    }
+    .hero::after {
+      content: "﴾"; position: absolute; inset-inline-start: -10px; bottom: -80px;
+      font-family: var(--serif); color: var(--accent); opacity: .07;
+      font-size: 240px; line-height: 1; pointer-events: none;
+    }
+    .hero .eyebrow {
+      color: var(--gold); font-family: var(--display); font-weight: 500;
+      font-size: 13px; letter-spacing: 4px; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .hero .verse {
+      font-family: var(--serif); font-size: clamp(22px, 3vw, 30px);
+      line-height: 2; color: var(--text);
+      max-width: 780px; margin: 0 auto; text-align: center;
+    }
+    .hero .verse .separator {
+      color: var(--gold); margin: 0 20px; opacity: .8;
+      font-family: var(--display);
+    }
+    .hero .attribution {
+      text-align: center; margin-top: 18px;
+      color: var(--text-muted); font-size: 14px;
+    }
+    .hero .attribution a { color: var(--text-muted); border-bottom: 1px dotted var(--gold); }
+    .hero .attribution a:hover { color: var(--accent); text-decoration: none; }
+    .hero .hero-actions {
+      display: flex; gap: 8px; justify-content: center; margin-top: 20px;
+    }
+    .hero .hero-actions button {
+      background: transparent;
+      color: var(--text-muted); border: 1px solid var(--border);
+      border-radius: 999px; padding: 6px 14px; font-size: 13px;
+      transition: color .15s, border-color .15s, background .15s;
+    }
+    .hero .hero-actions button:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ---------- Poem detail ---------- */
+    .poem-detail {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px clamp(20px, 5vw, 56px);
+      box-shadow: var(--shadow-sm);
+    }
+    .poem-detail h1 {
+      font-family: var(--display); font-weight: 700;
+      font-size: clamp(24px, 3vw, 32px);
+      color: var(--text); text-align: center;
+      margin: 0 0 6px;
+    }
+    .poem-detail .byline {
+      color: var(--text-muted); text-align: center; margin-bottom: 26px;
+      font-size: 15px;
+    }
+    .poem-detail .byline a { color: var(--accent); font-weight: 600; }
+    .poem-detail .divider-ornament {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      color: var(--gold); margin: 26px 0;
+      font-family: var(--display); font-size: 14px; letter-spacing: 8px;
+    }
+    .poem-detail .divider-ornament::before,
+    .poem-detail .divider-ornament::after {
+      content: ""; flex: 1; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+      max-width: 120px;
+    }
+    .poem-tags {
+      display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .verse-row {
+      display: grid; grid-template-columns: 1fr auto 1fr;
+      align-items: baseline; gap: 24px;
+      padding: 14px 6px;
+      font-family: var(--serif);
+      font-size: 20px; line-height: 1.9;
+      border-bottom: 1px dashed var(--border);
+      cursor: pointer;
+      transition: background .15s;
+      position: relative;
+    }
+    .verse-row:hover { background: var(--bg-soft); }
+    .verse-row:last-child { border-bottom: 0; }
+    .verse-row .num {
+      position: absolute; inset-inline-start: -8px; top: 12px;
+      color: var(--text-dim); font-family: var(--sans); font-size: 11px;
+      background: var(--bg-elev); padding: 0 4px;
+    }
+    .verse-row .hemi { color: var(--text); }
+    .verse-row .hemi.a { text-align: end; padding-inline-end: 8px; }
+    .verse-row .hemi.b { text-align: start; padding-inline-start: 8px; }
+    .verse-row .sep {
+      color: var(--gold); font-size: 14px;
+      font-family: var(--display); opacity: .5;
+    }
+    .verse-row.free { grid-template-columns: 1fr; text-align: center; }
+    .verse-row .play-hint {
+      position: absolute; top: 50%; inset-inline-end: 10px;
+      transform: translateY(-50%);
+      opacity: 0; transition: opacity .15s;
+      color: var(--gold); font-size: 14px;
+    }
+    .verse-row:hover .play-hint { opacity: 1; }
+    .verse-row.playing {
+      background: linear-gradient(90deg, var(--gold-soft), transparent 70%);
+      box-shadow: inset 4px 0 0 var(--gold);
+    }
+    .verse-row.playing .hemi { color: var(--accent); }
+    .verse-row.playing .play-hint { opacity: 1; color: var(--accent); animation: pulse 1s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1 } 50% { opacity: .4 } }
+
+    /* Poem reader toolbar */
+    .poem-toolbar {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      flex-wrap: wrap;
+      background: var(--bg-soft);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 16px;
+      margin: 20px auto 24px;
+      max-width: fit-content;
+    }
+    .poem-toolbar .btn {
+      background: var(--accent); color: #fff;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      padding: 8px 18px; font: inherit; font-size: 14px; font-weight: 500;
+      display: inline-flex; align-items: center; gap: 6px;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .poem-toolbar .btn:hover {
+      background: color-mix(in oklab, var(--accent) 85%, black);
+    }
+    .poem-toolbar .btn.playing {
+      background: var(--gold); border-color: var(--gold); color: #1c1a15;
+    }
+    .poem-toolbar .progress {
+      color: var(--text-muted); font-size: 13px;
+      display: inline-flex; align-items: center; gap: 4px;
+      min-width: 70px;
+    }
+    .poem-toolbar .progress .spinner {
+      width: 12px; height: 12px; border-radius: 50%;
+      border: 2px solid var(--border); border-top-color: var(--accent);
+      animation: spin .8s linear infinite;
+    }
+    .poem-toolbar .rate {
+      background: transparent; border: 1px solid var(--border);
+      border-radius: 999px; padding: 4px 10px;
+      font: inherit; font-size: 12px; color: var(--text-muted);
+    }
+
+    /* Poet page */
+    .poet-header {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+    .poet-header h1 {
+      font-family: var(--display); font-size: 30px; margin: 0 0 8px;
+    }
+    .poet-header .facts {
+      color: var(--text-muted); font-size: 14px;
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .poet-header .facts span::before {
+      content: "•"; color: var(--gold); margin: 0 8px;
+    }
+    .poet-header .facts span:first-child::before { display: none; }
+    .poet-header .bio {
+      max-width: 620px; margin: 12px auto 0;
+      color: var(--text-muted); font-size: 15px; line-height: 1.9;
+    }
+
+    /* ---------- Pager ---------- */
+    .pager {
+      display: flex; justify-content: space-between; margin-top: 24px;
+      align-items: center;
+    }
+    .pager-btn {
+      background: var(--bg-elev);
+      color: var(--text); border: 1px solid var(--border);
+      border-radius: 999px; padding: 8px 20px;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .pager-btn:hover:not([disabled]) { border-color: var(--accent); color: var(--accent); }
+    .pager-btn[disabled] {
+      background: transparent; color: var(--text-dim); border-color: var(--border);
+      cursor: not-allowed;
+    }
+
+    .filters-bar {
+      background: var(--bg-elev); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 12px 16px;
+      display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+      margin-bottom: 20px;
+    }
+    .filters-bar label { color: var(--text-muted); font-size: 13px; }
+    .filters-bar select {
+      background: transparent; border: 1px solid var(--border); border-radius: 6px;
+      padding: 6px 10px; color: var(--text); font: inherit; font-size: 14px;
+    }
+    .filters-bar .clear {
+      color: var(--text-muted); background: transparent; border: 0;
+      font-size: 13px; padding: 4px 8px;
+    }
+    .filters-bar .clear:hover { color: var(--accent); }
+
+    /* ---------- Focused verse reader (modal) ---------- */
+    .reader-backdrop {
+      position: fixed; inset: 0;
+      background: color-mix(in oklab, var(--bg) 30%, rgba(0,0,0,.7));
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 100; padding: 24px;
+      animation: fadeIn .18s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .reader {
+      background: var(--bg-elev);
+      border-radius: var(--radius-lg);
+      max-width: 820px; width: 100%;
+      padding: 48px clamp(28px, 5vw, 56px) 28px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      max-height: 92vh; overflow-y: auto;
+      border: 1px solid var(--border-strong);
+      animation: slideUp .22s ease;
+    }
+    .reader .close {
+      position: absolute; top: 14px; inset-inline-start: 18px;
+      background: transparent; border: 0; font-size: 24px;
+      color: var(--text-muted); line-height: 1;
+      width: 32px; height: 32px; border-radius: 999px;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: color .15s, background .15s;
+    }
+    .reader .close:hover { color: var(--accent); background: var(--bg-soft); }
+
+    .reader .verse-num {
+      color: var(--gold); font-family: var(--display);
+      font-size: 12px; letter-spacing: 4px; text-align: center;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .reader .verse-num::before, .reader .verse-num::after {
+      content: "◆"; margin: 0 10px; opacity: .5; font-size: 10px;
+    }
+    .reader .hemistich {
+      font-family: var(--serif);
+      font-size: clamp(24px, 3vw, 32px);
+      line-height: 2;
+      color: var(--text);
+      text-align: center;
+      margin: 6px 0;
+      transition: color .3s;
+    }
+    .reader .hemistich.b { color: color-mix(in oklab, var(--text) 88%, var(--gold)); }
+    .reader .hemistich.speaking {
+      color: var(--accent);
+    }
+    .reader .divider {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      color: var(--gold); margin: 26px auto;
+      font-family: var(--display); font-size: 14px; letter-spacing: 6px;
+      max-width: 320px;
+    }
+    .reader .divider::before, .reader .divider::after {
+      content: ""; flex: 1; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+    }
+    .reader .context {
+      color: var(--text-muted); font-size: 14px; text-align: center;
+    }
+    .reader .context a { color: var(--accent); border-bottom: 1px dotted var(--gold); }
+    .reader .context a:hover { text-decoration: none; }
+
+    .reader .actions {
+      display: flex; gap: 10px; justify-content: center; margin-top: 26px;
+      flex-wrap: wrap; align-items: center;
+    }
+    .reader .actions .btn {
+      background: var(--bg-soft); color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 16px; font-size: 13px;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: color .15s, background .15s, border-color .15s;
+    }
+    .reader .actions .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .reader .actions .btn.primary {
+      background: var(--accent); color: #fff; border-color: var(--accent);
+    }
+    .reader .actions .btn.primary:hover {
+      background: color-mix(in oklab, var(--accent) 85%, black); color: #fff;
+    }
+    .reader .actions .btn.primary.playing {
+      background: var(--gold); border-color: var(--gold);
+      color: #1c1a15;
+    }
+    .reader .actions .btn[disabled] { opacity: .5; cursor: not-allowed; }
+    .reader .actions .toast {
+      color: color-mix(in oklab, var(--accent) 60%, green);
+      font-size: 12px; opacity: 0; transition: opacity .18s;
+    }
+    .reader .actions .toast.show { opacity: 1; }
+    .reader .actions .status {
+      color: var(--text-muted); font-size: 12px;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .reader .actions .status.error { color: var(--accent); }
+    .reader .actions .status .spinner {
+      width: 12px; height: 12px; border-radius: 50%;
+      border: 2px solid var(--border); border-top-color: var(--accent);
+      animation: spin .8s linear infinite;
+      display: none;
+    }
+    .reader .actions .status.loading .spinner { display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .reader .rate-row {
+      display: flex; gap: 10px; align-items: center; justify-content: center;
+      margin-top: 12px; font-size: 12px; color: var(--text-dim);
+    }
+    .reader .rate-row select {
+      background: transparent; border: 1px solid var(--border); border-radius: 6px;
+      padding: 3px 8px; font: inherit; font-size: 12px; color: var(--text-muted);
+    }
+
+    .reader .nav {
+      display: flex; justify-content: space-between; margin-top: 22px;
+      padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .reader .nav button {
+      background: transparent; border: 0; color: var(--text-muted);
+      padding: 4px 8px; font-size: 14px; border-radius: 6px;
+    }
+    .reader .nav button:hover:not([disabled]) { color: var(--accent); }
+    .reader .nav button[disabled] { color: var(--text-dim); cursor: not-allowed; }
+
+    /* ---------- States ---------- */
+    .loading, .empty { color: var(--text-dim); padding: 40px; text-align: center; font-size: 14px; }
+    .loading .dots::after {
+      display: inline-block; content: ""; width: 4px; animation: dots 1.4s steps(4) infinite;
+    }
+    @keyframes dots { 0% { color: transparent; text-shadow: none } 25% { color: var(--text-dim); text-shadow: none } 50% { color: var(--text-dim); text-shadow: 6px 0 0 var(--text-dim) } 75% { color: var(--text-dim); text-shadow: 6px 0 0 var(--text-dim), 12px 0 0 var(--text-dim) } 100% { color: transparent; text-shadow: none } }
+    .error-box {
+      background: var(--accent-soft); border: 1px solid var(--accent);
+      color: var(--accent); padding: 14px 18px; border-radius: var(--radius-md);
+      text-align: center;
+    }
+
+    /* ---------- Utility ---------- */
+    .link { color: var(--accent); }
+    .link:hover { text-decoration: underline; text-decoration-color: var(--gold); }
+    .stack > * + * { margin-top: 18px; }
+
+    /* ---------- Auth (sign-in) ---------- */
+    .auth-btn {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font: inherit; font-size: 13px; font-weight: 500;
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: border-color .15s, color .15s;
+    }
+    .auth-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .auth-btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .auth-btn.primary:hover { background: color-mix(in oklab, var(--accent) 85%, black); color: #fff; }
+    .user-menu {
+      position: relative;
+    }
+    .user-menu .avatar {
+      background: var(--gold-soft); color: color-mix(in oklab, var(--gold) 60%, var(--text));
+      border: 1px solid var(--border);
+      width: 36px; height: 36px; border-radius: 999px;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: var(--display); font-weight: 700; font-size: 14px;
+      cursor: pointer;
+    }
+    .user-menu .avatar:hover { border-color: var(--accent); }
+    .user-menu .dropdown {
+      position: absolute; top: calc(100% + 8px); inset-inline-end: 0;
+      background: var(--bg-elev); border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md); box-shadow: var(--shadow-md);
+      min-width: 220px; padding: 6px; z-index: 30;
+      display: none;
+    }
+    .user-menu.open .dropdown { display: block; }
+    .user-menu .dropdown .who {
+      padding: 10px 12px; border-bottom: 1px solid var(--border);
+      margin-bottom: 4px;
+    }
+    .user-menu .dropdown .who .name { font-weight: 600; color: var(--text); }
+    .user-menu .dropdown .who .email { color: var(--text-muted); font-size: 12px; word-break: break-all; }
+    .user-menu .dropdown a, .user-menu .dropdown button {
+      display: block; width: 100%; text-align: start;
+      background: transparent; border: 0; padding: 8px 12px;
+      color: var(--text); font: inherit; font-size: 14px;
+      border-radius: 4px; cursor: pointer; text-decoration: none;
+    }
+    .user-menu .dropdown a:hover, .user-menu .dropdown button:hover {
+      background: var(--bg-soft); color: var(--accent); text-decoration: none;
+    }
+    .user-menu .dropdown .sep { border-top: 1px solid var(--border); margin: 4px 0; }
+    .user-menu .dropdown .signout { color: var(--accent); }
+
+    .auth-modal {
+      background: var(--bg-elev); border-radius: var(--radius-lg);
+      border: 1px solid var(--border-strong); box-shadow: var(--shadow-lg);
+      max-width: 440px; width: 100%; padding: 32px 32px 24px;
+      position: relative; animation: slideUp .22s ease;
+    }
+    .auth-modal .close {
+      position: absolute; top: 12px; inset-inline-start: 14px;
+      background: transparent; border: 0; font-size: 22px; color: var(--text-muted);
+      width: 32px; height: 32px; border-radius: 999px; cursor: pointer;
+    }
+    .auth-modal .close:hover { color: var(--accent); background: var(--bg-soft); }
+    .auth-modal h2 {
+      font-family: var(--display); font-size: 22px; margin: 0 0 4px; text-align: center;
+    }
+    .auth-modal .lead {
+      color: var(--text-muted); font-size: 13px; text-align: center; margin-bottom: 20px;
+    }
+    .auth-tabs {
+      display: flex; gap: 4px; margin-bottom: 20px;
+      background: var(--bg-soft); padding: 4px; border-radius: 999px;
+    }
+    .auth-tabs button {
+      flex: 1; background: transparent; border: 0;
+      padding: 8px 14px; border-radius: 999px;
+      color: var(--text-muted); font: inherit; font-size: 13px; font-weight: 500;
+      cursor: pointer; transition: background .15s, color .15s;
+    }
+    .auth-tabs button.active { background: var(--bg-elev); color: var(--text); box-shadow: var(--shadow-sm); }
+    .auth-form { display: flex; flex-direction: column; gap: 12px; }
+    .auth-form label { color: var(--text-muted); font-size: 12px; margin-bottom: 2px; display: block; }
+    .auth-form input {
+      width: 100%; padding: 10px 12px;
+      background: var(--bg); color: var(--text);
+      border: 1px solid var(--border); border-radius: 6px;
+      font: inherit; font-size: 14px;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .auth-form input:focus {
+      outline: none; border-color: var(--gold);
+      box-shadow: 0 0 0 3px var(--gold-soft);
+    }
+    .auth-form button[type=submit] {
+      background: var(--accent); color: #fff; border: 0;
+      padding: 12px; border-radius: 8px;
+      font: inherit; font-weight: 600; font-size: 15px;
+      cursor: pointer; margin-top: 4px;
+      transition: background .15s;
+    }
+    .auth-form button[type=submit]:hover { background: color-mix(in oklab, var(--accent) 85%, black); }
+    .auth-form button[type=submit][disabled] { opacity: .6; cursor: wait; }
+    .auth-form .err {
+      background: var(--accent-soft); border: 1px solid var(--accent);
+      color: var(--accent); padding: 10px 12px; border-radius: 6px;
+      font-size: 13px;
+    }
+    .auth-form .hint { color: var(--text-dim); font-size: 11px; margin-top: -6px; }
+
+    /* Google Sign-In */
+    .auth-sso {
+      display: flex; flex-direction: column; gap: 10px; margin-bottom: 4px;
+    }
+    .auth-sso .g-btn {
+      background: var(--bg-elev); color: var(--text);
+      border: 1px solid var(--border-strong); border-radius: 8px;
+      padding: 10px 14px; font: inherit; font-size: 14px; font-weight: 500;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: background .15s, border-color .15s;
+    }
+    .auth-sso .g-btn:hover:not([disabled]) { background: var(--bg-soft); border-color: var(--gold); }
+    .auth-sso .g-btn[disabled] { opacity: .55; cursor: not-allowed; }
+    .auth-sso .g-btn svg { width: 18px; height: 18px; }
+    .auth-sso .g-hint { font-size: 11px; color: var(--text-dim); text-align: center; }
+    .auth-divider {
+      display: flex; align-items: center; gap: 10px;
+      color: var(--text-dim); font-size: 11px; margin: 4px 0;
+    }
+    .auth-divider::before, .auth-divider::after {
+      content: ""; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* Small screens */
+    @media (max-width: 640px) {
+      header { flex-wrap: wrap; padding: 12px; gap: 10px; }
+      header nav { order: 3; width: 100%; margin: 0; overflow-x: auto; }
+      .header-right { margin-inline-start: auto; }
+      .search-wrap input { width: 140px; }
+      .hero { padding: 30px 20px; }
+      .verse-row { grid-template-columns: 1fr; text-align: center; gap: 4px; }
+      .verse-row .sep { display: none; }
+      .verse-row .hemi.a, .verse-row .hemi.b { text-align: center; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <a href="#/"><span>شِعْري</span><span class="dot">◆</span></a>
+    </div>
+    <nav id="main-nav">
+      <a href="#/" data-route="/">الرئيسية</a>
+      <a href="#/poems" data-route="/poems">القصائد</a>
+      <a href="#/poets" data-route="/poets">الشعراء</a>
+      <a href="#/eras" data-route="/eras">العصور</a>
+      <a href="#/countries" data-route="/countries">البلدان</a>
+    </nav>
+    <div class="header-right">
+      <div class="search-wrap">
+        <select id="search-type" title="نطاق البحث">
+          <option value="all">الكل</option>
+          <option value="poem">قصائد</option>
+          <option value="poet">شعراء</option>
+          <option value="verse">أبيات</option>
+        </select>
+        <input id="search-q" type="search" placeholder="ابحث… (Ctrl+K)">
+        <button id="search-btn" class="icon-btn" title="بحث">⌕</button>
+      </div>
+      <button id="theme-toggle" class="theme-toggle" title="تبديل المظهر" aria-label="Toggle theme">◐</button>
+      <div id="auth-slot"></div>
+    </div>
+  </header>
+
+  <main id="app">
+    <div class="loading"><span class="dots">جاري التحميل</span></div>
+  </main>
+
+  <script>
+    const API = '/api/v1';
+
+    // ---------- Tiny DOM helper ----------
+    const el = (tag, attrs = {}, ...children) => {
+      const node = document.createElement(tag);
+      for (const [k, v] of Object.entries(attrs)) {
+        if (v == null || v === false) continue;
+        if (k === 'class') node.className = v;
+        else if (k === 'html') node.innerHTML = v;
+        else if (k.startsWith('on')) node.addEventListener(k.slice(2), v);
+        else if (typeof v === 'boolean') node.toggleAttribute(k, v);
+        else node.setAttribute(k, v);
+      }
+      for (const c of children) {
+        if (c == null || c === false) continue;
+        node.appendChild(typeof c === 'string' || typeof c === 'number'
+          ? document.createTextNode(String(c)) : c);
+      }
+      return node;
+    };
+    const app = document.getElementById('app');
+    const setView = (...nodes) => { app.replaceChildren(...nodes); window.scrollTo({top: 0, behavior: 'instant'}); };
+
+    // ---------- Auth session ----------
+    const SESSION_KEY = 'sh3ri.session';
+    const session = {
+      token: null,
+      user: null,
+      load() {
+        try {
+          const raw = localStorage.getItem(SESSION_KEY);
+          if (raw) {
+            const s = JSON.parse(raw);
+            this.token = s.token || null;
+            this.user  = s.user  || null;
+          }
+        } catch {}
+      },
+      save(token, user) {
+        this.token = token; this.user = user;
+        try { localStorage.setItem(SESSION_KEY, JSON.stringify({ token, user })); } catch {}
+      },
+      clear() {
+        this.token = null; this.user = null;
+        try { localStorage.removeItem(SESSION_KEY); } catch {}
+      },
+      isSignedIn() { return !!this.token; },
+    };
+    session.load();
+
+    /**
+     * All API calls go through here so a Bearer token (when present) is
+     * always attached. On 401 we silently clear the session — the token
+     * has expired (14-day sliding window) or was revoked from another
+     * device.
+     */
+    async function api(path, options = {}) {
+      const headers = { Accept: 'application/json', ...(options.headers || {}) };
+      if (session.token) headers.Authorization = 'Bearer ' + session.token;
+      const res = await fetch(API + path, { ...options, headers });
+      if (res.status === 401 && session.isSignedIn()) {
+        session.clear();
+        renderAuthSlot();
+      }
+      if (!res.ok) {
+        // Try to unpack the JSON error envelope for a friendlier message.
+        let msg = res.status + ' ' + res.statusText;
+        try {
+          const body = await res.clone().json();
+          if (body?.error?.message) msg = body.error.message;
+          if (body?.error?.errors) {
+            const first = Object.values(body.error.errors)[0];
+            if (Array.isArray(first) && first[0]) msg = first[0];
+          }
+        } catch {}
+        const err = new Error(msg);
+        err.status = res.status;
+        throw err;
+      }
+      // 204 has no body
+      return res.status === 204 ? null : res.json();
+    }
+
+    // ---------- Chips helper ----------
+    function chips(item) {
+      const out = [];
+      if (item.era)      out.push(el('span', { class: 'chip era' },     item.era.name_ar));
+      if (item.country)  out.push(el('span', { class: 'chip country' }, item.country.name_ar));
+      if (item.category) out.push(el('span', { class: 'chip' },         item.category.name_ar));
+      if (item.meter)    out.push(el('span', { class: 'chip' },         item.meter.name_ar));
+      return out;
+    }
+    const breadcrumb = (...items) => el('div', { class: 'breadcrumbs' },
+      ...items.flatMap((it, i) => {
+        const nodes = [
+          typeof it === 'string' ? el('span', {}, it) :
+          el('a', { href: it.href }, it.label),
+        ];
+        if (i < items.length - 1) nodes.push(el('span', { class: 'sep' }, '›'));
+        return nodes;
+      })
+    );
+
+    // ---------- Home ----------
+    async function viewHome() {
+      setView(el('div', { class: 'loading' }, el('span', { class: 'dots' }, 'جاري التحميل')));
+
+      // Grab a random-ish first-page verse from a random cursor point.
+      // (Simple approach: fetch page 1 of poems, pick one with verses.)
+      let featured = null;
+      try {
+        const list = await api('/poems?per_page=20');
+        for (const p of list.data) {
+          if (p.verse_count && p.verse_count > 1) {
+            const detail = (await api('/poems/' + p.slug)).data;
+            if (detail.verses && detail.verses.length) {
+              // Pick a memorable-looking verse (not the first, not the last).
+              const idx = Math.min(detail.verses.length - 1, Math.max(0, Math.floor(detail.verses.length / 3)));
+              featured = { poem: detail, verse: detail.verses[idx] };
+              break;
+            }
+          }
+        }
+      } catch (e) { /* silent fallback */ }
+
+      const tiles = [
+        { glyph: '﴿', name: 'القصائد',   desc: 'تصفّح أكثر من ٥٤ ألف قصيدة',   href: '#/poems' },
+        { glyph: '◆', name: 'الشعراء',   desc: '٥٣٨ شاعرًا من مختلف العصور',   href: '#/poets' },
+        { glyph: '❦', name: 'العصور',    desc: 'من الجاهلية إلى الحداثة',       href: '#/eras' },
+        { glyph: '⁂', name: 'البلدان',   desc: 'شعر العرب من كلّ الأقطار',      href: '#/countries' },
+      ];
+
+      const nodes = [];
+
+      if (featured) {
+        nodes.push(el('div', { class: 'hero' },
+          el('div', { class: 'eyebrow' }, 'بيت اليوم'),
+          el('div', { class: 'verse',
+            onclick: () => openVerseReader(featured.verse.uuid, featured.poem),
+            style: 'cursor:pointer',
+          },
+            el('span', {}, featured.verse.hemistich_a),
+            featured.verse.hemistich_b
+              ? el('span', {}, el('span', { class: 'separator' }, '﴾﴿'), featured.verse.hemistich_b)
+              : null
+          ),
+          el('div', { class: 'attribution' },
+            'من قصيدة ',
+            el('a', { href: '#/poem/' + featured.poem.slug }, '«' + featured.poem.title_ar + '»'),
+            ' — ',
+            featured.poem.poet
+              ? el('a', { href: '#/poet/' + featured.poem.poet.slug }, featured.poem.poet.name_ar)
+              : null,
+          ),
+          el('div', { class: 'hero-actions' },
+            el('button', { onclick: () => openVerseReader(featured.verse.uuid, featured.poem) }, '🔊 استمع'),
+            el('button', { onclick: viewHome }, '↻ بيت آخر'),
+          )
+        ));
+      }
+
+      nodes.push(el('div', { class: 'section-title' },
+        el('span', { class: 'ornament' }, '❦'),
+        el('span', {}, 'تصفّح المكتبة'),
+      ));
+      nodes.push(el('div', { class: 'grid tiles' },
+        ...tiles.map(t => el('div', {
+          class: 'tile',
+          onclick: () => { location.hash = t.href; },
+        },
+          el('span', { class: 'glyph' }, t.glyph),
+          el('div', { class: 'name' }, t.name),
+          el('div', { class: 'desc' }, t.desc),
+        ))
+      ));
+
+      setView(...nodes);
+    }
+
+    // ---------- Poems list ----------
+    async function viewPoems(cursor = null, filter = {}) {
+      setView(el('div', { class: 'loading' }, el('span', { class: 'dots' }, 'جاري التحميل')));
+      const params = new URLSearchParams({ per_page: 24 });
+      if (cursor) params.set('cursor', cursor);
+      for (const [k, v] of Object.entries(filter)) if (v) params.set('filter[' + k + ']', v);
+
+      let eras = []; try { eras = (await api('/eras')).data; } catch {}
+      let data;
+      try { data = await api('/poems?' + params); }
+      catch (e) { return setView(el('div', { class: 'error-box' }, 'خطأ: ' + e.message)); }
+
+      const eraSelect = el('select', {
+        onchange: (e) => { location.hash = '#/poems' + (e.target.value ? '?era=' + encodeURIComponent(e.target.value) : ''); },
+      },
+        el('option', { value: '' }, 'كلّ العصور'),
+        ...eras.map(er => {
+          const opt = el('option', { value: er.slug }, er.name_ar);
+          if (er.slug === filter.era) opt.selected = true;
+          return opt;
+        })
+      );
+
+      const cards = data.data.map(p => el('div', {
+        class: 'card poem',
+        onclick: () => { location.hash = '#/poem/' + p.slug; },
+      },
+        el('div', { class: 'title' }, p.title_ar),
+        el('div', { class: 'sub' }, p.poet ? p.poet.name_ar : '—'),
+        el('div', { class: 'meta' },
+          ...chips(p),
+          el('span', { class: 'chip count' }, p.verse_count + ' بيت')
+        )
+      ));
+
+      const activeFilterText = filter.era ? ' — عصر: ' + (eras.find(e => e.slug === filter.era)?.name_ar || filter.era) : '';
+
+      setView(
+        breadcrumb({ href: '#/', label: 'الرئيسية' }, 'القصائد'),
+        el('div', { class: 'section-title' },
+          el('span', { class: 'ornament' }, '﴿'),
+          el('span', {}, 'القصائد'),
+          el('span', { class: 'section-hint' }, activeFilterText),
+        ),
+        el('div', { class: 'filters-bar' },
+          el('label', {}, 'العصر:'), eraSelect,
+          filter.era
+            ? el('button', { class: 'clear', onclick: () => location.hash = '#/poems' }, 'إزالة المرشّح ×')
+            : null,
+        ),
+        cards.length
+          ? el('div', { class: 'grid poems' }, ...cards)
+          : el('div', { class: 'empty' }, 'لا توجد قصائد.'),
+        el('div', { class: 'pager' },
+          el('span', {}, ''),
+          el('button', {
+            class: 'pager-btn',
+            disabled: !data.meta.next_cursor,
+            onclick: () => {
+              const qs = new URLSearchParams(filter);
+              qs.set('cursor', data.meta.next_cursor);
+              location.hash = '#/poems?' + qs;
+            },
+          }, 'التالي ←')
+        )
+      );
+    }
+
+    // ---------- Poets list ----------
+    async function viewPoets(cursor = null, filter = {}) {
+      setView(el('div', { class: 'loading' }, el('span', { class: 'dots' }, 'جاري التحميل')));
+      const params = new URLSearchParams({ per_page: 30 });
+      if (cursor) params.set('cursor', cursor);
+      for (const [k, v] of Object.entries(filter)) if (v) params.set('filter[' + k + ']', v);
+
+      let data;
+      try { data = await api('/poets?' + params); }
+      catch (e) { return setView(el('div', { class: 'error-box' }, 'خطأ: ' + e.message)); }
+
+      const cards = data.data.map(p => el('div', {
+        class: 'card',
+        onclick: () => { location.hash = '#/poet/' + p.slug; },
+      },
+        el('div', { class: 'title' }, p.name_ar),
+        el('div', { class: 'sub' }, ...chips(p)),
+        p.poem_count != null
+          ? el('div', { class: 'meta' }, el('span', { class: 'chip count' }, p.poem_count + ' قصيدة'))
+          : null
+      ));
+
+      setView(
+        breadcrumb({ href: '#/', label: 'الرئيسية' }, 'الشعراء'),
+        el('div', { class: 'section-title' },
+          el('span', { class: 'ornament' }, '◆'),
+          el('span', {}, 'الشعراء'),
+        ),
+        cards.length
+          ? el('div', { class: 'grid poets' }, ...cards)
+          : el('div', { class: 'empty' }, 'لا يوجد شعراء.'),
+        el('div', { class: 'pager' },
+          el('span', {}, ''),
+          el('button', {
+            class: 'pager-btn',
+            disabled: !data.meta.next_cursor,
+            onclick: () => { location.hash = '#/poets?cursor=' + data.meta.next_cursor; },
+          }, 'التالي ←')
+        )
+      );
+    }
+
+    // ---------- Poet detail ----------
+    async function viewPoet(slug) {
+      setView(el('div', { class: 'loading' }, el('span', { class: 'dots' }, 'جاري التحميل')));
+      let poet, poems;
+      try {
+        poet = (await api('/poets/' + slug)).data;
+        poems = (await api('/poets/' + slug + '/poems?per_page=50')).data;
+      } catch (e) { return setView(el('div', { class: 'error-box' }, 'خطأ: ' + e.message)); }
+
+      const facts = [];
+      if (poet.era)     facts.push(el('span', {}, poet.era.name_ar));
+      if (poet.country) facts.push(el('span', {}, poet.country.name_ar));
+      facts.push(el('span', {}, (poet.poem_count ?? poems.length) + ' قصيدة'));
+
+      const cards = poems.map(p => el('div', {
+        class: 'card poem',
+        onclick: () => { location.hash = '#/poem/' + p.slug; },
+      },
+        el('div', { class: 'title' }, p.title_ar),
+        el('div', { class: 'meta' },
+          el('span', { class: 'chip count' }, p.verse_count + ' بيت'),
+          ...chips(p),
+        )
+      ));
+
+      setView(
+        breadcrumb({ href: '#/', label: 'الرئيسية' }, { href: '#/poets', label: 'الشعراء' }, poet.name_ar),
+        el('div', { class: 'poet-header' },
+          el('h1', {}, poet.name_ar),
+          el('div', { class: 'facts' }, ...facts),
+          poet.bio_ar ? el('div', { class: 'bio' }, poet.bio_ar) : null,
+        ),
+        el('div', { class: 'section-title' },
+          el('span', { class: 'ornament' }, '❦'),
+          el('span', {}, 'قصائد الشاعر'),
+        ),
+        cards.length
+          ? el('div', { class: 'grid poems' }, ...cards)
+          : el('div', { class: 'empty' }, 'لا توجد قصائد.'),
+      );
+    }
+
+    // Cache the most recently viewed poem so the modal knows siblings for
+    // prev/next verse navigation without re-fetching.
+    let currentPoem = null;
+
+    // ---------- Poem detail ----------
+    async function viewPoem(slug, openVerseUuid = null) {
+      setView(el('div', { class: 'loading' }, el('span', { class: 'dots' }, 'جاري التحميل')));
+      let poem;
+      try { poem = (await api('/poems/' + slug)).data; }
+      catch (e) { return setView(el('div', { class: 'error-box' }, 'خطأ: ' + e.message)); }
+      currentPoem = poem;
+
+      const facts = [];
+      if (poem.era)      facts.push(el('span', { class: 'chip era' },     poem.era.name_ar));
+      else if (poem.poet?.era) facts.push(el('span', { class: 'chip era' }, poem.poet.era.name_ar));
+      if (poem.category) facts.push(el('span', { class: 'chip' },         poem.category.name_ar));
+      if (poem.meter)    facts.push(el('span', { class: 'chip' },         'بحر ' + poem.meter.name_ar));
+
+      const rowEls = [];
+      const verses = poem.verses.map((v, i) => {
+        const hasB = !!v.hemistich_b;
+        const row = el('div', {
+          class: 'verse-row' + (hasB ? '' : ' free'),
+          onclick: () => {
+            // Clicking a specific verse takes over from the poem-wide player.
+            poemPlayer.stop();
+            openVerseReader(v.uuid, poem);
+          },
+          title: 'اضغط لقراءة البيت بصوت',
+        },
+          el('span', { class: 'num' }, v.position),
+          el('span', { class: 'hemi a' }, v.hemistich_a),
+          hasB ? el('span', { class: 'sep' }, '◆') : null,
+          hasB ? el('span', { class: 'hemi b' }, v.hemistich_b) : null,
+          el('span', { class: 'play-hint' }, '▶'),
+        );
+        rowEls.push(row);
+        return row;
+      });
+
+      // Poem-wide playback toolbar
+      const progressEl = el('span', { class: 'progress' }, '');
+      const playAllBtn = el('button', { class: 'btn', title: 'قراءة القصيدة كاملة (Space)' }, '🎧 استمع للقصيدة');
+      playAllBtn.addEventListener('click', () => {
+        if (poemPlayer.isPlaying()) { poemPlayer.stop(); }
+        else { poemPlayer.start(poem, rowEls, playAllBtn, progressEl); }
+      });
+      const rateSel = el('select', {
+        class: 'rate', title: 'السرعة',
+        onchange: (e) => {
+          ttsPrefs.rate = parseFloat(e.target.value); saveTtsPrefs();
+          if (poemPlayer.audio) poemPlayer.audio.playbackRate = ttsPrefs.rate;
+        },
+      },
+        ...['0.75', '0.9', '1.0', '1.15', '1.3'].map(r => {
+          const opt = el('option', { value: r }, r + '×');
+          if (parseFloat(r) === (ttsPrefs.rate ?? 1.0)) opt.selected = true;
+          return opt;
+        })
+      );
+      const toolbar = el('div', { class: 'poem-toolbar' }, playAllBtn, progressEl, rateSel);
+
+      setView(
+        breadcrumb(
+          { href: '#/', label: 'الرئيسية' },
+          { href: '#/poems', label: 'القصائد' },
+          poem.title_ar
+        ),
+        el('article', { class: 'poem-detail' },
+          el('h1', {}, poem.title_ar),
+          el('div', { class: 'byline' },
+            'للشاعر ',
+            poem.poet
+              ? el('a', { href: '#/poet/' + poem.poet.slug }, poem.poet.name_ar)
+              : el('span', {}, '—'),
+          ),
+          facts.length ? el('div', { class: 'poem-tags' }, ...facts) : null,
+          toolbar,
+          el('div', { class: 'divider-ornament' }, '◆ ❦ ◆'),
+          el('div', { class: 'verses-container' }, ...verses),
+        )
+      );
+
+      if (openVerseUuid) openVerseReader(openVerseUuid, poem);
+    }
+
+    // ---------- Focused verse reader (modal + audio) ----------
+    const TTS_PREFS = 'sh3ri.tts';
+    const ttsPrefs = (() => {
+      try { return JSON.parse(localStorage.getItem(TTS_PREFS)) || {}; } catch { return {}; }
+    })();
+    const saveTtsPrefs = () => { try { localStorage.setItem(TTS_PREFS, JSON.stringify(ttsPrefs)); } catch {} };
+
+    let activeAudio = null;
+
+    function stopSpeech() {
+      if (activeAudio) {
+        try { activeAudio.pause(); } catch {}
+        activeAudio.src = '';
+        activeAudio = null;
+      }
+      document.querySelectorAll('.reader .hemistich.speaking').forEach(el => el.classList.remove('speaking'));
+      document.querySelectorAll('.reader .btn.primary.playing').forEach(el => {
+        el.classList.remove('playing');
+        el.innerHTML = '🔊 استمع';
+      });
+    }
+
+    // ---------- Full-poem sequential player ----------
+    // Chains per-verse MP3s from /verses/{uuid}/audio. Each verse is cached
+    // server-side after first play, so the second listen-through is instant.
+    // We preload the next verse while the current one plays to remove gaps.
+    const poemPlayer = {
+      poem: null,
+      index: 0,
+      audio: null,
+      preload: null,
+      btn: null,
+      progressEl: null,
+      rowEls: [],
+      isPlaying() { return !!this.audio; },
+      stop() {
+        if (this.audio) { try { this.audio.pause(); } catch {} this.audio.src = ''; this.audio = null; }
+        if (this.preload) { this.preload.src = ''; this.preload = null; }
+        this.rowEls.forEach(r => r?.classList.remove('playing'));
+        if (this.btn) {
+          this.btn.classList.remove('playing');
+          this.btn.innerHTML = '🎧 استمع للقصيدة';
+        }
+        if (this.progressEl) this.progressEl.textContent = '';
+      },
+      start(poem, rowEls, btn, progressEl) {
+        this.stop();
+        this.poem = poem;
+        this.rowEls = rowEls;
+        this.btn = btn;
+        this.progressEl = progressEl;
+        this.index = 0;
+        this.btn.classList.add('playing');
+        this.btn.innerHTML = '⏹ إيقاف';
+        this._playAt(0);
+      },
+      _urlFor(i) {
+        const v = this.poem.verses[i];
+        return v ? API + '/verses/' + v.uuid + '/audio' : null;
+      },
+      _highlight(i) {
+        this.rowEls.forEach((r, idx) => r?.classList.toggle('playing', idx === i));
+        const row = this.rowEls[i];
+        if (row) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      },
+      _updateProgress(i, loading = false) {
+        if (!this.progressEl) return;
+        const total = this.poem.verses.length;
+        this.progressEl.innerHTML = '';
+        if (loading) this.progressEl.appendChild(el('span', { class: 'spinner' }));
+        this.progressEl.appendChild(el('span', {}, (i + 1) + ' / ' + total));
+      },
+      _playAt(i) {
+        if (!this.poem || i >= this.poem.verses.length) { this.stop(); return; }
+        this.index = i;
+        this._highlight(i);
+        this._updateProgress(i, true);
+
+        // Adopt the preloaded audio for this index if we have one.
+        let a;
+        if (this.preload && this.preload.dataset.idx === String(i)) {
+          a = this.preload; this.preload = null;
+        } else {
+          a = new Audio(this._urlFor(i));
+          a.dataset.idx = String(i);
+          a.preload = 'auto';
+        }
+        a.playbackRate = ttsPrefs.rate ?? 1.0;
+        this.audio = a;
+
+        a.oncanplay = () => this._updateProgress(i, false);
+        a.onended = () => {
+          this.rowEls[i]?.classList.remove('playing');
+          this._playAt(i + 1);
+        };
+        a.onerror = () => {
+          // Skip broken verse rather than derailing the whole poem.
+          console.warn('poem-player: verse', i, 'failed, skipping');
+          this._playAt(i + 1);
+        };
+        // Start warming up the next one now.
+        this._preloadNext(i + 1);
+
+        a.play().catch(() => {/* user-gesture issue is rare — the click that started this is our gesture */});
+      },
+      _preloadNext(i) {
+        if (i >= (this.poem?.verses.length ?? 0)) return;
+        const p = new Audio(this._urlFor(i));
+        p.dataset.idx = String(i);
+        p.preload = 'auto';
+        this.preload = p;
+      },
+    };
+
+    function closeReader({ updateHash = true } = {}) {
+      stopSpeech();
+      const backdrop = document.querySelector('.reader-backdrop');
+      if (backdrop) backdrop.remove();
+      document.removeEventListener('keydown', readerKeyHandler);
+      if (updateHash && location.hash.includes('?v=')) {
+        const clean = location.hash.split('?')[0];
+        history.replaceState(null, '', clean);
+      }
+    }
+
+    function readerKeyHandler(e) {
+      if (e.key === 'Escape') { closeReader(); return; }
+      if (e.key === 'ArrowRight') { stepVerse(-1); return; }
+      if (e.key === 'ArrowLeft')  { stepVerse(+1); return; }
+      if (e.key === ' ' || e.code === 'Space') {
+        const btn = document.querySelector('.reader .btn.primary');
+        if (btn && !btn.disabled) { e.preventDefault(); btn.click(); }
+      }
+    }
+
+    function stepVerse(delta) {
+      if (!currentPoem) return;
+      const backdrop = document.querySelector('.reader-backdrop');
+      const currentUuid = backdrop?.dataset.verseUuid;
+      const idx = currentPoem.verses.findIndex(v => v.uuid === currentUuid);
+      if (idx < 0) return;
+      const nextIdx = idx + delta;
+      if (nextIdx < 0 || nextIdx >= currentPoem.verses.length) return;
+      openVerseReader(currentPoem.verses[nextIdx].uuid, currentPoem);
+    }
+
+    function toggleSpeak(verse, { hemA, hemB, speakBtn, statusEl }) {
+      if (activeAudio && !activeAudio.paused) { stopSpeech(); return; }
+
+      const rate = ttsPrefs.rate ?? 1.0;
+      const url = API + '/verses/' + verse.uuid + '/audio';
+      const audio = new Audio(url);
+      audio.playbackRate = rate;
+      audio.preload = 'auto';
+      activeAudio = audio;
+
+      const setPlaying = (on) => {
+        [hemA, hemB].forEach(el => el && el.classList.toggle('speaking', on));
+        speakBtn.classList.toggle('playing', on);
+        speakBtn.innerHTML = on ? '⏹ إيقاف' : '🔊 استمع';
+      };
+      const setStatus = (text, tone = 'muted') => {
+        if (!statusEl) return;
+        statusEl.classList.remove('loading', 'error');
+        if (tone === 'loading') statusEl.classList.add('loading');
+        if (tone === 'error') statusEl.classList.add('error');
+        statusEl.querySelector('.text').textContent = text || '';
+      };
+
+      setStatus('جاري التحضير…', 'loading');
+      speakBtn.disabled = true;
+
+      audio.addEventListener('canplay', () => { speakBtn.disabled = false; setStatus(''); });
+      audio.addEventListener('play',  () => setPlaying(true));
+      audio.addEventListener('pause', () => setPlaying(false));
+      audio.addEventListener('ended', () => { setPlaying(false); activeAudio = null; });
+      audio.addEventListener('error', async () => {
+        setPlaying(false); speakBtn.disabled = false; activeAudio = null;
+        let msg = 'تعذّر توليد الصوت.';
+        try {
+          const r = await fetch(url, { headers: { Accept: 'application/json' } });
+          if ((r.headers.get('Content-Type') || '').includes('json')) {
+            const body = await r.json();
+            if (body?.error?.message) msg = body.error.message;
+          } else if (r.status === 429) msg = 'تجاوزت حدّ الطلبات، حاول بعد قليل.';
+          else if (r.status === 503) msg = 'خدمة الصوت غير مهيّأة على الخادم.';
+        } catch {}
+        setStatus(msg, 'error');
+      });
+
+      audio.play().catch(() => {/* handled by 'error' */});
+    }
+
+    async function openVerseReader(verseUuid, poem = null) {
+      let verse = poem?.verses?.find(v => v.uuid === verseUuid);
+      if (!verse) {
+        try {
+          const res = (await api('/verses/' + verseUuid)).data;
+          verse = res;
+          poem = res.poem || null;
+          if (poem && !poem.verses) {
+            try {
+              const full = (await api('/poems/' + poem.slug)).data;
+              currentPoem = full; poem = full;
+              verse = full.verses.find(v => v.uuid === verseUuid) || verse;
+            } catch {}
+          }
+        } catch (e) { alert('تعذّر تحميل البيت: ' + e.message); return; }
+      }
+
+      closeReader({ updateHash: false });
+
+      const deepLink = location.origin + '/browse.html#/verse/' + verseUuid;
+      const verseText = verse.hemistich_a + (verse.hemistich_b ? '\n' + verse.hemistich_b : '');
+      const attribution = poem ? `\n\n— ${poem.poet?.name_ar || ''}, «${poem.title_ar}»` : '';
+
+      const idx = poem?.verses?.findIndex(v => v.uuid === verse.uuid) ?? -1;
+      const hasPrev = idx > 0;
+      const hasNext = poem && idx >= 0 && idx < poem.verses.length - 1;
+
+      const hemA = el('div', { class: 'hemistich' }, verse.hemistich_a);
+      const hemB = verse.hemistich_b ? el('div', { class: 'hemistich b' }, verse.hemistich_b) : null;
+
+      const toast = el('span', { class: 'toast' }, '✓ تم النسخ');
+      const flash = () => { toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 1500); };
+      const copyText = async (text) => {
+        try { await navigator.clipboard.writeText(text); flash(); }
+        catch { alert(text); }
+      };
+
+      const statusEl = el('span', { class: 'status' },
+        el('span', { class: 'spinner' }),
+        el('span', { class: 'text' }, '')
+      );
+
+      const speakBtn = el('button', { class: 'btn primary', title: 'قراءة صوتية (Space)' }, '🔊 استمع');
+      speakBtn.addEventListener('click', () => toggleSpeak(verse, { hemA, hemB, speakBtn, statusEl }));
+
+      const rateSelect = el('select', {
+        onchange: (e) => {
+          ttsPrefs.rate = parseFloat(e.target.value); saveTtsPrefs();
+          if (activeAudio) activeAudio.playbackRate = ttsPrefs.rate;
+        },
+      },
+        ...['0.75', '0.9', '1.0', '1.15', '1.3'].map(r => {
+          const opt = el('option', { value: r }, r + '×');
+          if (parseFloat(r) === (ttsPrefs.rate ?? 1.0)) opt.selected = true;
+          return opt;
+        })
+      );
+
+      const modal = el('div', { class: 'reader', onclick: (e) => e.stopPropagation() },
+        el('button', { class: 'close', title: 'إغلاق (Esc)', onclick: () => closeReader() }, '×'),
+        el('div', { class: 'verse-num' }, 'البيت ' + verse.position),
+        hemA, hemB,
+        el('div', { class: 'divider' }, '◆ ❦ ◆'),
+        el('div', { class: 'context' },
+          poem
+            ? el('span', {}, 'من قصيدة ',
+                el('a', { href: '#/poem/' + poem.slug, onclick: () => closeReader({ updateHash: false }) },
+                  '«' + poem.title_ar + '»'),
+                ' — ',
+                poem.poet ? el('a', {
+                  href: '#/poet/' + poem.poet.slug,
+                  onclick: () => closeReader({ updateHash: false })
+                }, poem.poet.name_ar) : null,
+              )
+            : el('span', {}, ''),
+        ),
+        el('div', { class: 'actions' },
+          speakBtn,
+          el('button', { class: 'btn', onclick: () => copyText(verseText + attribution) }, '📋 نسخ'),
+          el('button', { class: 'btn', onclick: () => copyText(deepLink) }, '🔗 رابط'),
+          navigator.share ? el('button', {
+            class: 'btn',
+            onclick: () => navigator.share({ text: verseText + attribution, url: deepLink }).catch(() => {}),
+          }, '↗ مشاركة') : null,
+          toast, statusEl,
+        ),
+        el('div', { class: 'rate-row' }, el('span', {}, 'السرعة:'), rateSelect),
+        el('div', { class: 'nav' },
+          el('button', { disabled: !hasPrev, onclick: () => stepVerse(-1) }, '→ السابق'),
+          el('button', { disabled: !hasNext, onclick: () => stepVerse(+1) }, 'التالي ←'),
+        ),
+      );
+
+      const backdrop = el('div', { class: 'reader-backdrop', onclick: () => closeReader() }, modal);
+      backdrop.dataset.verseUuid = verse.uuid;
+      document.body.appendChild(backdrop);
+      document.addEventListener('keydown', readerKeyHandler);
+
+      const targetHash = poem
+        ? '#/poem/' + poem.slug + '?v=' + verse.uuid
+        : '#/verse/' + verse.uuid;
+      if (location.hash !== targetHash) history.replaceState(null, '', targetHash);
+    }
+
+    // ---------- Eras / Countries ----------
+    async function viewEras() {
+      setView(el('div', { class: 'loading' }, el('span', { class: 'dots' }, 'جاري التحميل')));
+      let data;
+      try { data = (await api('/eras')).data; }
+      catch (e) { return setView(el('div', { class: 'error-box' }, 'خطأ: ' + e.message)); }
+      const cards = data.map(e => el('div', {
+        class: 'card',
+        onclick: () => { location.hash = '#/poems?era=' + e.slug; },
+      },
+        el('div', { class: 'title' }, e.name_ar),
+        el('div', { class: 'sub' }, e.name_en || ''),
+        el('div', { class: 'meta' },
+          el('span', { class: 'chip count' }, (e.start_year ?? '؟') + ' → ' + (e.end_year ?? 'اليوم')),
+        ),
+      ));
+      setView(
+        breadcrumb({ href: '#/', label: 'الرئيسية' }, 'العصور'),
+        el('div', { class: 'section-title' },
+          el('span', { class: 'ornament' }, '❦'),
+          el('span', {}, 'العصور الأدبية'),
+        ),
+        el('div', { class: 'grid taxonomy' }, ...cards),
+      );
+    }
+
+    async function viewCountries() {
+      setView(el('div', { class: 'loading' }, el('span', { class: 'dots' }, 'جاري التحميل')));
+      let data;
+      try { data = (await api('/countries')).data; }
+      catch (e) { return setView(el('div', { class: 'error-box' }, 'خطأ: ' + e.message)); }
+      const cards = data.map(c => el('div', {
+        class: 'card',
+        onclick: () => { location.hash = '#/poets?country=' + c.slug; },
+      },
+        el('div', { class: 'title' }, c.name_ar),
+        el('div', { class: 'sub' }, (c.iso_code || '—') + ' · ' + (c.name_en || '')),
+      ));
+      setView(
+        breadcrumb({ href: '#/', label: 'الرئيسية' }, 'البلدان'),
+        el('div', { class: 'section-title' },
+          el('span', { class: 'ornament' }, '⁂'),
+          el('span', {}, 'البلدان'),
+        ),
+        el('div', { class: 'grid taxonomy' }, ...cards),
+      );
+    }
+
+    // ---------- Search ----------
+    async function viewSearch(q, type = 'all') {
+      setView(el('div', { class: 'loading' }, el('span', { class: 'dots' }, 'جاري البحث')));
+      let data;
+      try { data = (await api('/search?q=' + encodeURIComponent(q) + '&type=' + type)).data; }
+      catch (e) { return setView(el('div', { class: 'error-box' }, 'خطأ: ' + e.message)); }
+
+      const sections = [];
+      if (data.poems.length) {
+        sections.push(el('div', { class: 'section-title' },
+          el('span', { class: 'ornament' }, '﴿'),
+          el('span', {}, 'القصائد'),
+          el('span', { class: 'section-hint' }, data.poems.length + ' نتيجة'),
+        ));
+        sections.push(el('div', { class: 'grid poems' }, ...data.poems.map(p => el('div', {
+          class: 'card poem',
+          onclick: () => { location.hash = '#/poem/' + p.slug; },
+        },
+          el('div', { class: 'title' }, p.title_ar),
+          el('div', { class: 'sub' }, p.poet ? p.poet.name_ar : ''),
+          el('div', { class: 'meta' }, ...chips(p)),
+        ))));
+      }
+      if (data.poets.length) {
+        sections.push(el('div', { class: 'section-title' },
+          el('span', { class: 'ornament' }, '◆'),
+          el('span', {}, 'الشعراء'),
+          el('span', { class: 'section-hint' }, data.poets.length + ' نتيجة'),
+        ));
+        sections.push(el('div', { class: 'grid poets' }, ...data.poets.map(p => el('div', {
+          class: 'card',
+          onclick: () => { location.hash = '#/poet/' + p.slug; },
+        },
+          el('div', { class: 'title' }, p.name_ar),
+          el('div', { class: 'sub' }, ...chips(p)),
+        ))));
+      }
+      if (data.verses.length) {
+        sections.push(el('div', { class: 'section-title' },
+          el('span', { class: 'ornament' }, '❦'),
+          el('span', {}, 'الأبيات'),
+          el('span', { class: 'section-hint' }, data.verses.length + ' نتيجة'),
+        ));
+        sections.push(el('div', { class: 'stack' }, ...data.verses.map(v => el('div', {
+          class: 'verse-row',
+          onclick: () => openVerseReader(v.uuid),
+          style: 'background: var(--bg-elev); border: 1px solid var(--border); border-radius: 10px; padding: 14px 20px; margin-bottom: 8px;',
+        },
+          el('span', { class: 'hemi a' }, v.hemistich_a),
+          v.hemistich_b ? el('span', { class: 'sep' }, '◆') : null,
+          v.hemistich_b ? el('span', { class: 'hemi b' }, v.hemistich_b) : null,
+        ))));
+      }
+      if (!sections.length) sections.push(el('div', { class: 'empty' }, 'لا نتائج «' + q + '».'));
+
+      setView(
+        breadcrumb({ href: '#/', label: 'الرئيسية' }, 'بحث: «' + q + '»'),
+        ...sections,
+      );
+    }
+
+    // ---------- /me/… views (require auth) ----------
+    async function viewMe(section) {
+      if (!session.isSignedIn()) {
+        setView(
+          el('div', { class: 'empty' },
+            el('div', { style: 'margin-bottom:12px' }, 'يجب تسجيل الدخول للوصول إلى هذه الصفحة.'),
+            el('button', { class: 'auth-btn primary', onclick: () => openAuthModal('login') }, 'دخول'),
+          )
+        );
+        return;
+      }
+
+      const titles = {
+        'favorites':   { crumb: 'المفضلة',    title: '❤ المفضلة',    path: '/me/favorites',   emptyMsg: 'لم تُضِف أيّ مفضّلة بعد.', hint: 'اضغط على أيّ بيت أو قصيدة لتضاف هنا.' },
+        'user-poems':  { crumb: 'قصائدي',     title: '✎ قصائدي',     path: '/user-poems',     emptyMsg: 'لم تكتب قصيدة بعد.',       hint: 'أنشئ قصيدة عبر POST /api/v1/user-poems (سنضيف واجهة كتابة قريبًا).' },
+        'submissions': { crumb: 'مقترحاتي',   title: '📝 مقترحاتي',  path: '/submissions',    emptyMsg: 'لم تقدّم مقترحًا بعد.',    hint: 'يمكنك اقتراح قصائد أو تصحيحات عبر POST /api/v1/submissions.' },
+      };
+      const t = titles[section];
+      setView(el('div', { class: 'loading' }, el('span', { class: 'dots' }, 'جاري التحميل')));
+
+      let data;
+      try { data = await api(t.path); }
+      catch (e) { return setView(el('div', { class: 'error-box' }, 'خطأ: ' + e.message)); }
+
+      const items = Array.isArray(data?.data) ? data.data : [];
+      const cards = items.map(item => {
+        if (section === 'favorites') {
+          const p = item.poem || item.verse?.poem;
+          const label = item.poem?.title_ar
+            || (item.verse ? item.verse.hemistich_a + (item.verse.hemistich_b ? ' … ' + item.verse.hemistich_b : '') : '—');
+          return el('div', {
+            class: 'card poem',
+            onclick: () => { if (p?.slug) location.hash = '#/poem/' + p.slug; },
+          },
+            el('div', { class: 'title' }, label),
+            el('div', { class: 'sub' }, p?.poet?.name_ar || ''),
+            el('div', { class: 'meta' }, el('span', { class: 'chip' }, item.type === 'verse' ? 'بيت' : 'قصيدة')),
+          );
+        }
+        if (section === 'user-poems') {
+          return el('div', {
+            class: 'card',
+            onclick: () => { /* No detail SPA view yet — open API JSON in new tab. */
+              window.open('/api/v1/user-poems/' + item.uuid, '_blank');
+            },
+          },
+            el('div', { class: 'title' }, item.title_ar),
+            el('div', { class: 'meta' },
+              el('span', { class: 'chip' }, item.status),
+              el('span', { class: 'chip' }, item.visibility),
+            ),
+          );
+        }
+        // submissions
+        return el('div', { class: 'card' },
+          el('div', { class: 'title' }, item.payload?.title_ar || item.payload?.name_ar || '(بلا عنوان)'),
+          el('div', { class: 'meta' },
+            el('span', { class: 'chip' }, item.type),
+            el('span', { class: 'chip' }, item.status),
+          ),
+        );
+      });
+
+      setView(
+        breadcrumb({ href: '#/', label: 'الرئيسية' }, t.crumb),
+        el('div', { class: 'section-title' },
+          el('span', { class: 'ornament' }, '❦'),
+          el('span', {}, t.title),
+        ),
+        cards.length
+          ? el('div', { class: 'grid poems' }, ...cards)
+          : el('div', { class: 'empty' },
+              el('div', { style: 'margin-bottom:8px' }, t.emptyMsg),
+              el('div', { style: 'color:var(--text-dim);font-size:12px' }, t.hint),
+            ),
+      );
+    }
+
+    // ---------- Router ----------
+    function markActiveNav(routePath) {
+      document.querySelectorAll('#main-nav a').forEach(a => {
+        const r = a.getAttribute('data-route');
+        a.classList.toggle('active',
+          r === routePath ||
+          (r !== '/' && routePath.startsWith(r))
+        );
+      });
+    }
+    function route() {
+      const hash = location.hash || '#/';
+      const [path, qs = ''] = hash.slice(1).split('?');
+      const params = new URLSearchParams(qs);
+      markActiveNav(path === '' ? '/' : path);
+      // Stop any full-poem playback when navigating away from the poem view
+      // (the ?v= modal is fine — it lives on top of the same poem page).
+      if (!path.startsWith('/poem/')) poemPlayer.stop();
+
+      if (path === '/' || path === '') return viewHome();
+      if (path === '/poems')     return viewPoems(params.get('cursor'), { era: params.get('era') });
+      if (path === '/poets')     return viewPoets(params.get('cursor'), { country: params.get('country') });
+      if (path.startsWith('/poet/')) return viewPoet(path.slice(6));
+      if (path.startsWith('/poem/')) return viewPoem(path.slice(6), params.get('v'));
+      if (path.startsWith('/verse/')) return openVerseReader(path.slice(7));
+      if (path === '/eras')      return viewEras();
+      if (path === '/countries') return viewCountries();
+      if (path === '/search')    return viewSearch(params.get('q') || '', params.get('type') || 'all');
+      if (path === '/me/favorites')   return viewMe('favorites');
+      if (path === '/me/user-poems')  return viewMe('user-poems');
+      if (path === '/me/submissions') return viewMe('submissions');
+      setView(el('div', { class: 'empty' }, '404 — لم يُعثر على الصفحة.'));
+    }
+
+    // ---------- Search box wiring ----------
+    const searchInput = document.getElementById('search-q');
+    const searchType  = document.getElementById('search-type');
+    const runSearch = () => {
+      const q = searchInput.value.trim();
+      if (!q) return;
+      location.hash = '#/search?q=' + encodeURIComponent(q) + '&type=' + searchType.value;
+    };
+    searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') runSearch(); });
+    document.getElementById('search-btn').addEventListener('click', runSearch);
+    document.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault(); searchInput.focus(); searchInput.select();
+      }
+    });
+
+    // ---------- Runtime config (google client id, feature flags) ----------
+    // Populated once on first modal open; cached in-memory.
+    let runtimeConfig = null;
+    async function loadRuntimeConfig() {
+      if (runtimeConfig) return runtimeConfig;
+      try { runtimeConfig = (await api('/config')).data; }
+      catch { runtimeConfig = { google_client_id: '', features: { google_signin: false } }; }
+      return runtimeConfig;
+    }
+
+    // Google Identity Services — load the library once, on demand.
+    let gsiReady = null;
+    function ensureGsi() {
+      if (gsiReady) return gsiReady;
+      gsiReady = new Promise((resolve, reject) => {
+        if (window.google?.accounts?.id) return resolve();
+        const s = document.createElement('script');
+        s.src = 'https://accounts.google.com/gsi/client';
+        s.async = true; s.defer = true;
+        s.onload = () => resolve();
+        s.onerror = () => reject(new Error('Failed to load Google Identity Services'));
+        document.head.appendChild(s);
+      });
+      return gsiReady;
+    }
+
+    /**
+     * Exchange a Google credential (ID token) for a Sanctum session.
+     * Reused by the "Continue with Google" button in both tabs.
+     */
+    async function signInWithGoogleCredential(credential, onError) {
+      try {
+        const res = await api('/auth/google', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id_token: credential,
+            device_name: 'browse.html-' + (navigator.userAgent.split(' ').pop() || 'web'),
+          }),
+        });
+        session.save(res.data.token, res.data.user);
+        renderAuthSlot();
+        closeAuthModal();
+      } catch (e) {
+        onError?.(e.message || 'تعذّر الدخول عبر جوجل.');
+      }
+    }
+
+    // ---------- Auth header slot + sign-in / sign-up modal ----------
+    const authSlot = document.getElementById('auth-slot');
+
+    function initials(name) {
+      if (!name) return '؟';
+      const parts = name.trim().split(/\s+/).slice(0, 2);
+      return parts.map(p => Array.from(p)[0] || '').join('') || name[0];
+    }
+
+    function renderAuthSlot() {
+      authSlot.innerHTML = '';
+      if (!session.isSignedIn()) {
+        authSlot.appendChild(el('button', {
+          class: 'auth-btn primary',
+          onclick: () => openAuthModal('login'),
+        }, 'دخول'));
+        return;
+      }
+
+      const menu = el('div', { class: 'user-menu' });
+      const avatar = el('button', {
+        class: 'avatar',
+        title: session.user?.name || '',
+        onclick: (e) => { e.stopPropagation(); menu.classList.toggle('open'); },
+      }, initials(session.user?.name));
+
+      const dropdown = el('div', { class: 'dropdown' },
+        el('div', { class: 'who' },
+          el('div', { class: 'name' }, session.user?.name || '—'),
+          el('div', { class: 'email' }, session.user?.email || ''),
+        ),
+        el('a', { href: '#/me/favorites', onclick: () => menu.classList.remove('open') }, '❤ المفضلة'),
+        el('a', { href: '#/me/user-poems', onclick: () => menu.classList.remove('open') }, '✎ قصائدي'),
+        el('a', { href: '#/me/submissions', onclick: () => menu.classList.remove('open') }, '📝 مقترحاتي'),
+        el('div', { class: 'sep' }),
+        el('button', {
+          class: 'signout',
+          onclick: async () => {
+            menu.classList.remove('open');
+            try { await api('/auth/logout', { method: 'POST' }); } catch {}
+            session.clear();
+            renderAuthSlot();
+            location.hash = '#/';
+          },
+        }, '↩ تسجيل الخروج'),
+      );
+      menu.appendChild(avatar);
+      menu.appendChild(dropdown);
+      authSlot.appendChild(menu);
+
+      // Close dropdown on outside click.
+      document.addEventListener('click', () => menu.classList.remove('open'), { once: true });
+    }
+
+    function closeAuthModal() {
+      const b = document.querySelector('.reader-backdrop[data-auth]');
+      if (b) b.remove();
+      const fallback = document.getElementById('google-fallback-host');
+      if (fallback) fallback.remove();
+    }
+
+    /**
+     * Fallback path when One Tap can't display (Safari, strict cookie envs).
+     * We render a real GIS button off-screen and click it programmatically so
+     * the user gets the standard Google popup instead of nothing.
+     */
+    async function openGoogleFallback(clientId, showErr) {
+      try {
+        await ensureGsi();
+        const host = document.createElement('div');
+        host.id = 'google-fallback-host';
+        host.style.cssText = 'position:fixed;bottom:24px;inset-inline-start:50%;transform:translateX(-50%);z-index:200;background:var(--bg-elev);padding:12px;border:1px solid var(--border-strong);border-radius:10px;box-shadow:var(--shadow-md)';
+        document.body.appendChild(host);
+
+        window.google.accounts.id.initialize({
+          client_id: clientId,
+          callback: async (r) => {
+            host.remove();
+            if (!r?.credential) { showErr('لم يُرجع جوجل رمز الاعتماد.'); return; }
+            await signInWithGoogleCredential(r.credential, showErr);
+          },
+          ux_mode: 'popup',
+        });
+        window.google.accounts.id.renderButton(host, {
+          type: 'standard', theme: 'outline', size: 'large',
+          text: 'signin_with', shape: 'pill', locale: 'ar',
+        });
+      } catch (e) {
+        showErr(e.message || 'تعذّر تحميل تسجيل الدخول بجوجل.');
+      }
+    }
+
+    async function openAuthModal(initialTab = 'login') {
+      closeAuthModal();
+
+      const errBox = el('div', { class: 'err', style: 'display:none' });
+      const showErr = (msg) => { errBox.textContent = msg; errBox.style.display = ''; };
+
+      const cfg = await loadRuntimeConfig();
+
+      // --- Google button (only if server has a client_id configured) ---
+      const googleBtn = el('button', {
+        type: 'button', class: 'g-btn',
+        title: cfg.features.google_signin ? 'الدخول باستخدام حساب جوجل' : 'ميزة الدخول عبر جوجل غير مفعّلة على الخادم',
+        disabled: !cfg.features.google_signin,
+        onclick: async () => {
+          try {
+            await ensureGsi();
+            window.google.accounts.id.initialize({
+              client_id: cfg.google_client_id,
+              callback: async (r) => {
+                if (!r?.credential) { showErr('لم يُرجع جوجل رمز الاعتماد.'); return; }
+                await signInWithGoogleCredential(r.credential, showErr);
+              },
+              ux_mode: 'popup',
+              use_fedcm_for_prompt: true,
+            });
+            window.google.accounts.id.prompt((notification) => {
+              // Some browsers block the One Tap prompt (Safari private mode,
+              // strict cookie settings). Fall back to a full-fat popup by
+              // rendering a temporary GSI button and clicking it.
+              if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                openGoogleFallback(cfg.google_client_id, showErr);
+              }
+            });
+          } catch (e) {
+            showErr(e.message || 'تعذّر تحميل تسجيل الدخول بجوجل.');
+          }
+        },
+      },
+        // Inline Google G logo — no external image, no CDN dependency.
+        el('svg', { viewBox: '0 0 48 48', 'aria-hidden': 'true' }),
+        el('span', {}, 'المتابعة باستخدام Google'),
+      );
+      // Inject the multi-color G paths (createElementNS needed for SVG).
+      const svg = googleBtn.querySelector('svg');
+      const ns = 'http://www.w3.org/2000/svg';
+      [
+        ['M43.6 20.5H42V20.4H24v7.2h11.1c-1.5 4-5.3 7-9.1 7-6.1 0-11-4.9-11-11s4.9-11 11-11c2.8 0 5.4 1.1 7.4 2.8l5.2-5.2C34.8 6.6 29.7 5 24 5 13.5 5 5 13.5 5 24s8.5 19 19 19c11 0 18.4-8 18.4-19 0-1.2-.1-2.4-.4-3.5z', '#FFC107'],
+        ['M6.3 14.7l6 4.4C13.9 15.3 18.6 12.5 24 12.5c2.8 0 5.4 1.1 7.4 2.8l5.2-5.2C34.8 6.6 29.7 5 24 5 16.3 5 9.7 9.4 6.3 14.7z', '#FF3D00'],
+        ['M24 43c5.6 0 10.6-2.1 14.4-5.6l-6.7-5.7c-2 1.5-4.6 2.5-7.7 2.5-3.8 0-7.6-3-9.1-7l-6 4.6C7.9 38.4 15.4 43 24 43z', '#4CAF50'],
+        ['M43.6 20.5H42V20.4H24v7.2h11.1c-.7 2-2 3.7-3.7 4.9l6.7 5.7C42.4 34.6 44 29.5 44 24c0-1.2-.1-2.4-.4-3.5z', '#1976D2'],
+      ].forEach(([d, fill]) => {
+        const p = document.createElementNS(ns, 'path');
+        p.setAttribute('d', d); p.setAttribute('fill', fill);
+        svg.appendChild(p);
+      });
+
+      const sso = el('div', { class: 'auth-sso' },
+        googleBtn,
+        !cfg.features.google_signin
+          ? el('div', { class: 'g-hint' }, 'مطلوب GOOGLE_CLIENT_ID على الخادم لتفعيل هذا الخيار.')
+          : null,
+      );
+      const divider = el('div', { class: 'auth-divider' }, el('span', {}, 'أو'));
+
+      // --- login form ---
+      const loginForm = el('form', { class: 'auth-form', autocomplete: 'on',
+        onsubmit: async (e) => {
+          e.preventDefault();
+          errBox.style.display = 'none';
+          const fd = new FormData(loginForm);
+          const submitBtn = loginForm.querySelector('button[type=submit]');
+          submitBtn.disabled = true; submitBtn.textContent = '…جاري الدخول';
+          try {
+            const res = await api('/auth/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: fd.get('email'),
+                password: fd.get('password'),
+                device_name: 'browse.html-' + (navigator.userAgent.split(' ').pop() || 'web'),
+              }),
+            });
+            session.save(res.data.token, res.data.user);
+            renderAuthSlot();
+            closeAuthModal();
+          } catch (err) {
+            showErr(err.message || 'تعذّر تسجيل الدخول.');
+            submitBtn.disabled = false; submitBtn.textContent = 'دخول';
+          }
+        },
+      },
+        el('div', {},
+          el('label', {}, 'البريد الإلكتروني'),
+          el('input', { type: 'email', name: 'email', required: true, autocomplete: 'email' }),
+        ),
+        el('div', {},
+          el('label', {}, 'كلمة المرور'),
+          el('input', { type: 'password', name: 'password', required: true, autocomplete: 'current-password' }),
+        ),
+        el('button', { type: 'submit' }, 'دخول'),
+      );
+
+      // --- login form ---
+      const loginForm = el('form', { class: 'auth-form', autocomplete: 'on',
+        onsubmit: async (e) => {
+          e.preventDefault();
+          errBox.style.display = 'none';
+          const fd = new FormData(loginForm);
+          const submitBtn = loginForm.querySelector('button[type=submit]');
+          submitBtn.disabled = true; submitBtn.textContent = '…جاري الدخول';
+          try {
+            const res = await api('/auth/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: fd.get('email'),
+                password: fd.get('password'),
+                device_name: 'browse.html-' + (navigator.userAgent.split(' ').pop() || 'web'),
+              }),
+            });
+            session.save(res.data.token, res.data.user);
+            renderAuthSlot();
+            closeAuthModal();
+          } catch (err) {
+            showErr(err.message || 'تعذّر تسجيل الدخول.');
+            submitBtn.disabled = false; submitBtn.textContent = 'دخول';
+          }
+        },
+      },
+        el('div', {},
+          el('label', {}, 'البريد الإلكتروني'),
+          el('input', { type: 'email', name: 'email', required: true, autocomplete: 'email' }),
+        ),
+        el('div', {},
+          el('label', {}, 'كلمة المرور'),
+          el('input', { type: 'password', name: 'password', required: true, autocomplete: 'current-password' }),
+        ),
+        el('button', { type: 'submit' }, 'دخول'),
+      );
+
+      // --- register form ---
+      const regForm = el('form', { class: 'auth-form', autocomplete: 'on',
+        onsubmit: async (e) => {
+          e.preventDefault();
+          errBox.style.display = 'none';
+          const fd = new FormData(regForm);
+          const pw = fd.get('password');
+          if (pw !== fd.get('password_confirmation')) {
+            showErr('كلمتا المرور غير متطابقتين.'); return;
+          }
+          const submitBtn = regForm.querySelector('button[type=submit]');
+          submitBtn.disabled = true; submitBtn.textContent = '…جاري إنشاء الحساب';
+          try {
+            const res = await api('/auth/register', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: fd.get('name'),
+                email: fd.get('email'),
+                password: pw,
+                password_confirmation: fd.get('password_confirmation'),
+                device_name: 'browse.html-' + (navigator.userAgent.split(' ').pop() || 'web'),
+              }),
+            });
+            session.save(res.data.token, res.data.user);
+            renderAuthSlot();
+            closeAuthModal();
+          } catch (err) {
+            showErr(err.message || 'تعذّر إنشاء الحساب.');
+            submitBtn.disabled = false; submitBtn.textContent = 'إنشاء الحساب';
+          }
+        },
+      },
+        el('div', {},
+          el('label', {}, 'الاسم'),
+          el('input', { type: 'text', name: 'name', required: true, autocomplete: 'name' }),
+        ),
+        el('div', {},
+          el('label', {}, 'البريد الإلكتروني'),
+          el('input', { type: 'email', name: 'email', required: true, autocomplete: 'email' }),
+        ),
+        el('div', {},
+          el('label', {}, 'كلمة المرور'),
+          el('input', { type: 'password', name: 'password', required: true, autocomplete: 'new-password', minlength: 9 }),
+          el('div', { class: 'hint' }, '٩ أحرف على الأقل، مع حرف ورقم ورمز.'),
+        ),
+        el('div', {},
+          el('label', {}, 'تأكيد كلمة المرور'),
+          el('input', { type: 'password', name: 'password_confirmation', required: true, autocomplete: 'new-password', minlength: 9 }),
+        ),
+        el('button', { type: 'submit' }, 'إنشاء الحساب'),
+      );
+
+      const body = el('div', {}, loginForm);
+
+      const tabLogin = el('button', { type: 'button' }, 'تسجيل الدخول');
+      const tabReg   = el('button', { type: 'button' }, 'إنشاء حساب');
+      const showTab = (which) => {
+        tabLogin.classList.toggle('active', which === 'login');
+        tabReg.classList.toggle('active', which === 'register');
+        body.replaceChildren(which === 'login' ? loginForm : regForm);
+        errBox.style.display = 'none';
+      };
+      tabLogin.onclick = () => showTab('login');
+      tabReg.onclick   = () => showTab('register');
+      showTab(initialTab);
+
+      const modal = el('div', { class: 'auth-modal', onclick: (e) => e.stopPropagation() },
+        el('button', { class: 'close', title: 'إغلاق', onclick: closeAuthModal }, '×'),
+        el('h2', {}, initialTab === 'register' ? 'مرحبًا بك في شِعْري' : 'أهلًا بعودتك'),
+        el('div', { class: 'lead' }, 'ادخل لحفظ المفضلة، إضافة قصائدك، والمشاركة في التحسين.'),
+        sso,
+        divider,
+        el('div', { class: 'auth-tabs' }, tabLogin, tabReg),
+        errBox,
+        body,
+      );
+
+      const backdrop = el('div', {
+        class: 'reader-backdrop',
+        'data-auth': 'true',
+        onclick: closeAuthModal,
+      }, modal);
+      document.body.appendChild(backdrop);
+    }
+
+    renderAuthSlot();
+
+    // ---------- Theme toggle ----------
+    const themeBtn = document.getElementById('theme-toggle');
+    const applyTheme = (theme) => {
+      if (theme === 'auto' || !theme) {
+        document.documentElement.removeAttribute('data-theme');
+        themeBtn.textContent = '◐';
+        themeBtn.title = 'المظهر: تلقائي';
+      } else {
+        document.documentElement.setAttribute('data-theme', theme);
+        themeBtn.textContent = theme === 'dark' ? '☾' : '☀';
+        themeBtn.title = theme === 'dark' ? 'المظهر: داكن' : 'المظهر: فاتح';
+      }
+    };
+    try { applyTheme(localStorage.getItem('sh3ri.theme') || 'auto'); } catch { applyTheme('auto'); }
+    themeBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'auto';
+      const next = current === 'auto' ? 'light' : current === 'light' ? 'dark' : 'auto';
+      try { localStorage.setItem('sh3ri.theme', next); } catch {}
+      applyTheme(next);
+    });
+
+    window.addEventListener('hashchange', route);
+    route();
+  </script>
+</body>
+</html>

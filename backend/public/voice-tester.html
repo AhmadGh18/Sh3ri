@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>مختبر الأصوات — Sh3ri</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Tahoma", "Amiri", "Cairo", sans-serif;
+      background: #fafaf7;
+      color: #222;
+      line-height: 1.7;
+    }
+    header {
+      background: #1f2937; color: #f9fafb;
+      padding: 12px 20px; display: flex; align-items: center; gap: 20px;
+      position: sticky; top: 0; z-index: 10;
+    }
+    header h1 { font-size: 18px; margin: 0; }
+    header a { color: #cbd5e1; text-decoration: none; font-size: 14px; }
+    header a:hover { color: #fff; }
+    main { max-width: 900px; margin: 24px auto; padding: 0 16px; }
+    h2 { font-size: 18px; margin: 16px 0 8px; color: #111; }
+    .card {
+      background: #fff; border: 1px solid #e5e7eb; border-radius: 6px;
+      padding: 14px 16px; margin-bottom: 12px;
+    }
+    label { display: block; font-size: 13px; color: #4b5563; margin-bottom: 4px; }
+    input[type="text"], textarea {
+      width: 100%; padding: 8px 10px; font: inherit;
+      border: 1px solid #d1d5db; border-radius: 4px; background: #fff;
+    }
+    textarea { min-height: 90px; resize: vertical; direction: rtl; font-size: 20px; line-height: 1.9; }
+    input[type="text"] { font-family: monospace; direction: ltr; text-align: left; }
+    .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
+    button {
+      background: #1f2937; color: #f9fafb; border: 0; border-radius: 4px;
+      padding: 8px 14px; cursor: pointer; font: inherit;
+    }
+    button:hover { background: #111827; }
+    button.chip {
+      background: #f3f4f6; color: #111; border: 1px solid #d1d5db;
+      border-radius: 999px; padding: 4px 12px; font-size: 13px;
+    }
+    button.chip:hover { background: #e5e7eb; }
+    button.chip.active { background: #dcfce7; border-color: #86efac; color: #065f46; }
+    button[disabled] { background: #d1d5db; color: #9ca3af; cursor: not-allowed; }
+    .status { color: #6b7280; font-size: 13px; min-height: 20px; }
+    .status.error { color: #b91c1c; }
+    .meta { color: #6b7280; font-size: 12px; margin-top: 4px; }
+    audio { width: 100%; margin-top: 8px; }
+    .env-note {
+      background: #fef3c7; border: 1px solid #fde68a; color: #92400e;
+      padding: 10px 14px; border-radius: 6px; font-size: 13px; margin-bottom: 16px;
+    }
+    code {
+      background: #f3f4f6; padding: 1px 6px; border-radius: 3px;
+      font-family: "Cascadia Mono", "Consolas", monospace; font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎙 مختبر الأصوات</h1>
+    <a href="/browse.html">← الرجوع للمتصفح</a>
+  </header>
+
+  <main>
+    <div class="env-note">
+      اختر صوتًا يناسب قراءة الشعر العربي. الأصوات الافتراضية أدناه مجّانية (الطبقة المجّانية من ElevenLabs). أصوات المكتبة تتطلّب اشتراكًا مدفوعًا.
+      عندما تجد الصوت المناسب، انسخ معرّفه (Voice ID) والصقه في ملف <code>.env</code> بجوار <code>ELEVENLABS_VOICE_ID</code> ثم شغّل
+      <code>php artisan config:clear</code>.
+    </div>
+
+    <div class="card">
+      <label>النص العربي للاختبار</label>
+      <textarea id="sample-text">عَلَى قَدْرِ أَهْلِ العَزْمِ تَأْتِي العَزَائِمُ … وَتَأْتِي عَلَى قَدْرِ الكِرَامِ المَكَارِمُ</textarea>
+      <div class="meta">يتم استخدام هذا البيت التجريبي لأنه يستهلك عدد أحرف قليل (تكلفة ~$0.005 لكل معاينة).</div>
+    </div>
+
+    <div class="card">
+      <label>الأصوات الافتراضية (متاحة على الطبقة المجّانية)</label>
+      <div class="row" id="preset-voices"></div>
+    </div>
+
+    <div class="card">
+      <label>أو ألصق معرّف صوت مخصّص (Voice ID)</label>
+      <div class="row">
+        <input type="text" id="custom-voice" placeholder="rPNcQ53R703tTmtue1AT" style="flex:1">
+        <button id="play-custom">▶ تشغيل</button>
+      </div>
+      <div class="meta">
+        احصل على معرّف من <a href="https://elevenlabs.io/app/voice-library" target="_blank" rel="noreferrer">مكتبة أصوات ElevenLabs</a>
+        أو من أصواتك الخاصة في <a href="https://elevenlabs.io/app/voice-lab" target="_blank" rel="noreferrer">Voice Lab</a>.
+        الأصوات من المكتبة تتطلّب اشتراكًا مدفوعًا. الأصوات المستنسخة (Cloned) تعمل حتى مع الحساب المجّاني.
+      </div>
+    </div>
+
+    <div class="card">
+      <label>المعاينة</label>
+      <div class="status" id="status">اختر صوتًا للاستماع.</div>
+      <div class="meta" id="current-voice"></div>
+      <audio id="preview" controls></audio>
+    </div>
+
+    <div class="card">
+      <h2>الصوت الحالي في <code>.env</code></h2>
+      <div class="meta">هذا الصوت هو الذي يُستخدم فعليًّا عند فتح أيّ بيت في <a href="/browse.html">/browse.html</a>. لتغييره، حرّر <code>ELEVENLABS_VOICE_ID</code> في <code>.env</code>.</div>
+      <div class="row">
+        <button id="test-current">▶ اختبار الصوت المستخدم حاليًّا</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // ElevenLabs' free-tier preset voices. All work with the multilingual_v2
+    // model — the ones marked ★ tend to handle Arabic best.
+    const PRESETS = [
+      { id: '21m00Tcm4TlvDq8ikWAM', name: 'Rachel',  gender: 'أنثى', note: 'هادئة، قراءة قصص' },
+      { id: 'AZnzlk1XvdvUeBnXmlld', name: 'Domi',    gender: 'أنثى', note: 'قوية، حماسية' },
+      { id: 'EXAVITQu4vr4xnSDxMAC', name: 'Bella',   gender: 'أنثى', note: 'ناعمة، عاطفية' },
+      { id: 'MF3mGyEYCl7XYWbV9V6O', name: 'Elli',    gender: 'أنثى', note: 'شبابية، طبيعية' },
+      { id: 'ErXwobaYiN019PkySvjV', name: 'Antoni ★', gender: 'ذكر', note: 'دافئ، للسرد والشعر' },
+      { id: 'pNInz6obpgDQGcFmaJgB', name: 'Adam',    gender: 'ذكر', note: 'عميق (الحالي)' },
+      { id: 'TxGEqnHWrfWFTfGW9XjX', name: 'Josh',    gender: 'ذكر', note: 'عميق، رسمي' },
+      { id: 'VR6AewLTigWG4xSOukaG', name: 'Arnold',  gender: 'ذكر', note: 'واضح، جادّ' },
+      { id: 'yoZ06aMxZJJ28mfd3POQ', name: 'Sam',     gender: 'ذكر', note: 'شبابي، خفيف' },
+    ];
+
+    const $ = (id) => document.getElementById(id);
+    const audio = $('preview');
+    const status = $('status');
+    const currentVoice = $('current-voice');
+    let currentSampleVerseUuid = null;
+
+    // The audio endpoint synthesizes on demand from a real verse UUID.
+    // We fetch one verse and reuse it for all previews — since ?voice_id
+    // varies per preset, the cache key varies too, so each is a real
+    // synthesis (~$0.005) the first time you click.
+    async function loadSampleVerse() {
+      const r = await fetch('/api/v1/poems?per_page=1', { headers: { Accept: 'application/json' } });
+      const poems = await r.json();
+      const slug = poems.data[0].slug;
+      const p = await fetch('/api/v1/poems/' + slug, { headers: { Accept: 'application/json' } });
+      const pd = await p.json();
+      currentSampleVerseUuid = pd.data.verses[0].uuid;
+      // Show the actual verse text used
+      $('sample-text').value = pd.data.verses[0].hemistich_a
+        + (pd.data.verses[0].hemistich_b ? ' … ' + pd.data.verses[0].hemistich_b : '');
+    }
+
+    async function play(voiceId, chipEl) {
+      if (!currentSampleVerseUuid) {
+        status.textContent = 'جاري تحميل بيت للاختبار…';
+        status.classList.remove('error');
+        try { await loadSampleVerse(); } catch (e) {
+          status.textContent = 'تعذّر تحميل بيت للاختبار.'; status.classList.add('error'); return;
+        }
+      }
+      status.textContent = '…جاري التحضير';
+      status.classList.remove('error');
+      document.querySelectorAll('#preset-voices .chip.active').forEach(el => el.classList.remove('active'));
+      if (chipEl) chipEl.classList.add('active');
+
+      const url = '/api/v1/verses/' + currentSampleVerseUuid + '/audio'
+        + (voiceId ? '?voice_id=' + encodeURIComponent(voiceId) : '');
+      audio.src = url;
+      currentVoice.textContent = voiceId ? ('voice_id: ' + voiceId) : 'الصوت الافتراضي من .env';
+
+      const err = async () => {
+        try {
+          const r = await fetch(url, { headers: { Accept: 'application/json' } });
+          if ((r.headers.get('Content-Type') || '').includes('json')) {
+            const b = await r.json();
+            status.textContent = 'خطأ: ' + (b?.error?.message || 'مجهول');
+          } else {
+            status.textContent = 'خطأ في التشغيل (HTTP ' + r.status + ')';
+          }
+        } catch { status.textContent = 'خطأ في الشبكة.'; }
+        status.classList.add('error');
+      };
+      audio.onerror = err;
+      audio.oncanplay = () => { status.textContent = 'جاهز — اضغط تشغيل.'; audio.play().catch(() => {}); };
+    }
+
+    // Render preset buttons
+    const holder = $('preset-voices');
+    PRESETS.forEach(v => {
+      const btn = document.createElement('button');
+      btn.className = 'chip';
+      btn.textContent = `${v.name} (${v.gender}) — ${v.note}`;
+      btn.title = v.id;
+      btn.addEventListener('click', () => play(v.id, btn));
+      holder.appendChild(btn);
+    });
+
+    $('play-custom').addEventListener('click', () => {
+      const id = $('custom-voice').value.trim();
+      if (!id) { status.textContent = 'الصق معرّف صوت أولًا.'; status.classList.add('error'); return; }
+      play(id, null);
+    });
+
+    $('test-current').addEventListener('click', () => play(null, null));
+
+    loadSampleVerse().catch(() => { status.textContent = 'الخادم لا يستجيب.'; status.classList.add('error'); });
+  </script>
+</body>
+</html>

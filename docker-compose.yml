@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sh3ri_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sh3ri
+      POSTGRES_USER: sh3ri
+      POSTGRES_PASSWORD: sh3ri
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C.UTF-8"
+    ports:
+      - "5540:5432"
+    volumes:
+      - sh3ri_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sh3ri -d sh3ri"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: sh3ri_redis
+    restart: unless-stopped
+    ports:
+      - "6390:6379"
+    volumes:
+      - sh3ri_redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: sh3ri_mailpit
+    restart: unless-stopped
+    ports:
+      - "1026:1025"
+      - "8026:8025"
+
+volumes:
+  sh3ri_pgdata:
+  sh3ri_redisdata:
