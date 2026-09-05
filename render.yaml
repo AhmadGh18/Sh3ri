@@ -2,6 +2,9 @@
 # connected via Render's dashboard. The frontend deploys to Vercel
 # separately (Vercel autodetects the Next.js app in frontend/).
 #
+# Render dropped native PHP support in 2024 — we ship a Dockerfile
+# instead. See backend/Dockerfile (PHP 8.4 + Apache + pdo_pgsql).
+#
 # Free tier caveats:
 # - Web service sleeps after 15 min of no traffic; first request cold-starts
 #   in ~30 s. Fine for testing / showcase, not for real users.
@@ -12,22 +15,11 @@
 services:
   - type: web
     name: sh3ri-backend
-    runtime: php
+    runtime: docker
     plan: free
-    region: frankfurt          # closest free region to MENA
-    rootDir: backend
-
-    buildCommand: |
-      composer install --no-dev --optimize-autoloader --no-interaction &&
-      php artisan config:clear &&
-      php artisan route:clear &&
-      php artisan view:clear
-
-    # Migrate on every boot (idempotent) then start the built-in Apache.
-    # heroku-php-apache2 comes with Render's PHP runtime.
-    startCommand: |
-      php artisan migrate --force &&
-      heroku-php-apache2 public/
+    region: frankfurt              # closest free region to MENA
+    rootDir: backend               # Dockerfile lives here
+    dockerfilePath: ./Dockerfile
 
     envVars:
       # Laravel core — set APP_KEY manually in the Render dashboard (paste
@@ -39,7 +31,7 @@ services:
       - key: APP_DEBUG
         value: "false"
       - key: APP_URL
-        sync: false               # paste your Render URL after first deploy
+        sync: false                 # paste your Render URL after first deploy
 
       # Postgres — paste Neon's connection string (includes ?sslmode=require).
       - key: DB_CONNECTION
