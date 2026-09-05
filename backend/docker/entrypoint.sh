@@ -15,5 +15,12 @@ php artisan migrate --force || {
   exit 1
 }
 
+# Seed on every boot — all seeders use updateOrCreate / firstOrCreate so
+# this is idempotent. Free-tier Render doesn't have Shell access, so we
+# can't run `db:seed` manually — bake it into the boot instead.
+# Cost: ~1-2s of extra cold-start. Wildly worth it.
+echo "→ php artisan db:seed --force"
+php artisan db:seed --force || echo "!! seed failed (continuing — data may already be present)"
+
 echo "→ starting apache on port ${PORT:-8080}"
 exec apache2-foreground
