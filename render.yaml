@@ -1,0 +1,78 @@
+# Render deploys the Laravel backend from this file when the repo is
+# connected via Render's dashboard. The frontend deploys to Vercel
+# separately (Vercel autodetects the Next.js app in frontend/).
+#
+# Free tier caveats:
+# - Web service sleeps after 15 min of no traffic; first request cold-starts
+#   in ~30 s. Fine for testing / showcase, not for real users.
+# - Neon's Postgres also sleeps. First DB query wakes it in ~1 s.
+# - No Redis — the app uses file cache/session drivers instead (set below).
+# - MP3 audio cache lives on the container's local disk and is lost on
+#   redeploy. The app re-synthesizes on demand.
+services:
+  - type: web
+    name: sh3ri-backend
+    runtime: php
+    plan: free
+    region: frankfurt          # closest free region to MENA
+    rootDir: backend
+
+    buildCommand: |
+      composer install --no-dev --optimize-autoloader --no-interaction &&
+      php artisan config:clear &&
+      php artisan route:clear &&
+      php artisan view:clear
+
+    # Migrate on every boot (idempotent) then start the built-in Apache.
+    # heroku-php-apache2 comes with Render's PHP runtime.
+    startCommand: |
+      php artisan migrate --force &&
+      heroku-php-apache2 public/
+
+    envVars:
+      # Laravel core — set APP_KEY manually in the Render dashboard (paste
+      # the value from your local backend/.env so encryption stays valid).
+      - key: APP_KEY
+        sync: false
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_URL
+        sync: false               # paste your Render URL after first deploy
+
+      # Postgres — paste Neon's connection string (includes ?sslmode=require).
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_URL
+        sync: false
+
+      # No Redis on free tier — file drivers instead.
+      - key: CACHE_STORE
+        value: file
+      - key: SESSION_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+
+      # CORS — paste your Vercel URL (e.g. https://sh3ri.vercel.app).
+      - key: SH3RI_CORS_ALLOWED_ORIGINS
+        sync: false
+
+      # TTS — same key you use locally.
+      - key: SH3RI_TTS_PROVIDER
+        value: elevenlabs
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: ELEVENLABS_VOICE_ID
+        value: pNInz6obpgDQGcFmaJgB
+      - key: ELEVENLABS_MODEL_ID
+        value: eleven_multilingual_v2
+
+      # Trust Render's proxy so URLs are generated with https://
+      - key: TRUSTED_PROXIES
+        value: "*"
+
+      # Log to stderr so Render's log viewer shows everything.
+      - key: LOG_CHANNEL
+        value: stderr
