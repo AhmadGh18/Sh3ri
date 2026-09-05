@@ -42,6 +42,14 @@ async function load(force = false) {
 
   state = { ...state, loading: true };
   emit();
+  // Explicit response shape — annotating the local vars breaks TS7022 that
+  // Next 16 flags when the same `cursor` reads from page.meta and feeds back
+  // into next iteration's `q` (compiler sees it as self-referential).
+  type FavPage = {
+    data: { type: FavKind; poem?: { slug: string } | null; verse?: { uuid: string } | null }[];
+    meta: { next_cursor: string | null };
+  };
+
   try {
     // Backend caps per_page at 50 by design; we page through so a heavy
     // user's UI is still accurate.
@@ -50,11 +58,8 @@ async function load(force = false) {
     let cursor: string | null = null;
     let safety = 40; // hard-cap 2000 items — big enough for MVP, safe.
     while (safety-- > 0) {
-      const q = cursor ? `?per_page=50&cursor=${encodeURIComponent(cursor)}` : `?per_page=50`;
-      const page = await apiClient<{
-        data: { type: FavKind; poem?: { slug: string } | null; verse?: { uuid: string } | null }[];
-        meta: { next_cursor: string | null };
-      }>(`/me/favorites${q}`);
+      const q: string = cursor ? `?per_page=50&cursor=${encodeURIComponent(cursor)}` : `?per_page=50`;
+      const page: FavPage = await apiClient<FavPage>(`/me/favorites${q}`);
       for (const f of page.data) {
         if (f.type === "poem"  && f.poem?.slug)  poems.add(f.poem.slug);
         if (f.type === "verse" && f.verse?.uuid) verses.add(f.verse.uuid);

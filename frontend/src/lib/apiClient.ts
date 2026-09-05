@@ -44,11 +44,15 @@ export async function apiClient<T = unknown>(
   const body = isJson ? await res.json() : null;
 
   if (!res.ok) {
+    // `body` came from `res.json()` typed as any; narrow the validation-error
+    // map so TS lets us pluck the first message out of it.
+    const errorsMap = body?.error?.errors as Record<string, string[]> | undefined;
+    const firstFieldErrors = errorsMap ? Object.values(errorsMap)[0] : undefined;
     const message =
       body?.error?.message ??
-      (body?.error?.errors ? Object.values(body.error.errors)[0]?.[0] : null) ??
+      firstFieldErrors?.[0] ??
       `HTTP ${res.status}`;
-    throw new ApiError(res.status, String(message), body?.error?.errors);
+    throw new ApiError(res.status, String(message), errorsMap);
   }
   return body as T;
 }

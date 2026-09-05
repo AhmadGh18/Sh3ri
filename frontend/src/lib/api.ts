@@ -83,8 +83,15 @@ async function apiFetch<T>(path: string, init?: FetchOpts): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-/** Build a `?filter[k]=v&...&sort=x&cursor=y` query string, skipping empties. */
-export function qs(params: Record<string, string | number | null | undefined> & { filter?: Record<string, string | undefined> }) {
+/**
+ * Build a `?filter[k]=v&...&sort=x&cursor=y` query string, skipping empties.
+ * Loose signature (`Record<string, unknown>`) so callers can pass a nested
+ * `filter` object without fighting TS's index-signature rules — we stringify
+ * defensively inside.
+ */
+type QsParams = { filter?: Record<string, string | undefined> } & Record<string, unknown>;
+
+export function qs(params: QsParams): string {
   const sp = new URLSearchParams();
   for (const [k, v] of Object.entries(params)) {
     if (k === "filter") continue;
