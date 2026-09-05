@@ -5,6 +5,8 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import PoemReader from "@/components/PoemReader";
 import FavoriteButton from "@/components/FavoriteButton";
 
+export const dynamic = "force-dynamic";
+
 export default async function PoemPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   let poem;

@@ -4,6 +4,8 @@ import PoemCard from "@/components/PoemCard";
 import SectionTitle from "@/components/SectionTitle";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
+export const dynamic = "force-dynamic";
+
 export default async function PoetPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   let poet, poems;

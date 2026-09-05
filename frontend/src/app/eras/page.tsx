@@ -3,6 +3,8 @@ import { api } from "@/lib/api";
 import SectionTitle from "@/components/SectionTitle";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
+export const dynamic = "force-dynamic";
+
 export default async function ErasPage() {
   const eras = (await api.listEras()).data;
   return (

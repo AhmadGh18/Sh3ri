@@ -5,6 +5,8 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import Pager from "@/components/Pager";
 import FilterBar from "@/components/FilterBar";
 
+export const dynamic = "force-dynamic";
+
 type Search = { era?: string; category?: string; cursor?: string };
 
 export default async function PoemsPage({ searchParams }: { searchParams: Promise<Search> }) {

@@ -3,6 +3,9 @@ import { api } from "@/lib/api";
 import SectionTitle from "@/components/SectionTitle";
 import HomeSearchHero from "@/components/HomeSearchHero";
 
+// Render at request time — Vercel builds must not fetch the API to prerender.
+export const dynamic = "force-dynamic";
+
 /**
  * Home. Just a hero (featured verse) + the four browse tiles.
  * Latest-poems strip was removed by request — users go into /poems for that.
