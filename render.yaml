@@ -39,11 +39,17 @@ services:
       - key: DB_URL
         sync: false
 
-      # No Redis on free tier — file drivers instead.
+      # No Redis on free tier — file drivers instead. Point them at /tmp,
+      # which is always writable regardless of Apache's runtime uid.
+      # (storage/ has hostile perms on Render's ephemeral container.)
       - key: CACHE_STORE
         value: file
+      - key: CACHE_FILE_PATH
+        value: /tmp/laravel-cache
       - key: SESSION_DRIVER
         value: file
+      - key: SESSION_FILES
+        value: /tmp/laravel-sessions
       - key: QUEUE_CONNECTION
         value: sync
 

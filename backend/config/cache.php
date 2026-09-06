@@ -48,8 +48,11 @@ return [
 
         'file' => [
             'driver' => 'file',
-            'path' => storage_path('framework/cache/data'),
-            'lock_path' => storage_path('framework/cache/data'),
+            // Prefer an env-supplied writable path (Render's storage/ dir has
+            // hostile perms on the free tier), then fall back to Laravel's
+            // conventional storage location for local dev.
+            'path' => env('CACHE_FILE_PATH') ?: storage_path('framework/cache/data'),
+            'lock_path' => env('CACHE_FILE_PATH') ?: storage_path('framework/cache/data'),
         ],
 
         'memcached' => [
