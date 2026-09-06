@@ -211,7 +211,9 @@ interface ComposeProps {
 function ComposeModal({ categories, initial, onClose, onSaved }: ComposeProps) {
   const [title, setTitle] = useState(initial?.title_ar ?? "");
   const [text, setText] = useState(initial?.raw_text ?? "");
-  const [visibility, setVisibility] = useState<"private" | "public">(initial?.visibility ?? "private");
+  // Default to public so newly composed poems land on the community feed
+  // as soon as the author hits publish. Editing keeps whatever it was.
+  const [visibility, setVisibility] = useState<"private" | "public">(initial?.visibility ?? "public");
   const [catId, setCatId] = useState<string>(String((initial?.category as { id?: number } | null)?.id ?? ""));
   const [err, setErr] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
