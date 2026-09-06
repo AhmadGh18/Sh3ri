@@ -27,7 +27,8 @@ class PlanSeeder extends Seeder
                 'name_en' => 'Guest',
                 'tagline_ar' => 'استمع لبضع أبيات قبل التسجيل',
                 'price_cents' => 0, 'currency' => 'USD',
-                'daily_audio_plays' => 30,   // ~1.5 poems/day — enough to sample
+                // Demo phase: unlimited for everyone. Revisit when we go paid.
+                'daily_audio_plays' => null,
                 'allow_download' => false,
                 'is_public' => false,   // hidden on /plans page
                 'sort' => 0,
@@ -38,7 +39,7 @@ class PlanSeeder extends Seeder
                 'name_en' => 'Free',
                 'tagline_ar' => 'كل الميزات، حصّة استماع يومية',
                 'price_cents' => 0, 'currency' => 'USD',
-                'daily_audio_plays' => 100,  // signed-in gets a real listening budget
+                'daily_audio_plays' => null,   // demo phase — unlimited
                 'allow_download' => false,
                 'is_public' => true,
                 'sort' => 1,
@@ -49,7 +50,7 @@ class PlanSeeder extends Seeder
                 'name_en' => 'Starter',
                 'tagline_ar' => 'استمع بلا انقطاع طوال اليوم تقريبًا',
                 'price_cents' => 299, 'currency' => 'USD',
-                'daily_audio_plays' => 150,
+                'daily_audio_plays' => null,   // demo phase — unlimited
                 'allow_download' => false,
                 'is_public' => true,
                 'sort' => 2,
