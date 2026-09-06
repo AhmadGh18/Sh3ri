@@ -47,8 +47,21 @@ RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist --no-in
 # 2) Copy the app + finalize autoloader
 COPY . .
 RUN composer dump-autoload --optimize --no-dev \
+ # Pre-create Laravel's runtime dirs so Apache doesn't have to mkdir at
+ # request time (which fails on the free-tier ephemeral disk when the
+ # container starts as root but Apache runs as www-data).
+ && mkdir -p storage/framework/cache/data \
+             storage/framework/sessions \
+             storage/framework/views \
+             storage/logs \
+             storage/app/verse_audio \
+             bootstrap/cache \
+ # Full read/write for owner + group, plus write for others — Render's
+ # PID 1 varies between deploys and mod_php can end up as a different
+ # uid than www-data. `chmod -R 777` isn't pretty, but the container
+ # filesystem is ephemeral and unreachable from outside, so it's safe.
  && chown -R www-data:www-data storage bootstrap/cache \
- && chmod -R ug+w storage bootstrap/cache
+ && chmod -R 777 storage bootstrap/cache
 
 # Render assigns $PORT at runtime; Apache honors it via envvars
 ENV PORT=8080
