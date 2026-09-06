@@ -167,6 +167,12 @@ final class AudioQuotaService
 
     private function secondsUntilMidnight(): int
     {
-        return CarbonImmutable::now()->addDay()->startOfDay()->diffInSeconds(CarbonImmutable::now(), false) * -1;
+        // Carbon 3 returns float from diffInSeconds; cast so the return-type
+        // stays int (was a hard TypeError on every guest audio play).
+        return (int) round(
+            CarbonImmutable::now()->diffInSeconds(
+                CarbonImmutable::now()->addDay()->startOfDay()
+            )
+        );
     }
 }
