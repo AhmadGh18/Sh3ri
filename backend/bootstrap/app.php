@@ -91,11 +91,19 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($errors !== null) {
                 $body['error']['errors'] = $errors;
             }
+            // Debug detail: local dev gets full class+file+line; production
+            // gets ONLY the class name for 5xx so we can diagnose from the
+            // response alone without needing shell access to Render.
             if (config('app.debug') && ! in_array($status, [401, 403, 404, 422, 429], true)) {
                 $body['error']['debug'] = [
                     'exception' => $e::class,
                     'file' => $e->getFile() . ':' . $e->getLine(),
+                    'message' => $e->getMessage(),
                 ];
+            } elseif ($status >= 500) {
+                $body['error']['exception_class'] = $e::class;
+                // Truncate to prevent leaking full query bodies etc.
+                $body['error']['reason'] = substr($e->getMessage(), 0, 200);
             }
 
             return response()->json($body, $status);
