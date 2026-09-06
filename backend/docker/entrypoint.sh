@@ -6,6 +6,11 @@ set -euo pipefail
 
 cd /var/www/html
 
+# Guarantee writable runtime dirs. /tmp is always writable on any
+# container image regardless of what uid Apache ends up running as.
+mkdir -p /tmp/laravel-cache /tmp/laravel-sessions
+chmod -R 0777 /tmp/laravel-cache /tmp/laravel-sessions || true
+
 echo "→ php artisan config:clear"
 php artisan config:clear || true
 
