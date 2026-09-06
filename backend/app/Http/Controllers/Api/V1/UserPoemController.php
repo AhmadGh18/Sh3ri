@@ -83,7 +83,12 @@ class UserPoemController extends Controller
     public function publish(Request $request, UserPoem $userPoem)
     {
         $this->authorize('update', $userPoem);
+        // Publishing means "share this with the community". Force visibility
+        // to public alongside the status change — the community feed filters
+        // by BOTH (status=published, visibility=public), and users clicking
+        // "publish" expect their work to actually reach the feed.
         $userPoem->status = UserPoemStatus::Published;
+        $userPoem->visibility = UserPoemVisibility::Public;
         $userPoem->published_at = now();
         $userPoem->save();
 
@@ -93,7 +98,11 @@ class UserPoemController extends Controller
     public function unpublish(Request $request, UserPoem $userPoem)
     {
         $this->authorize('update', $userPoem);
+        // Symmetric: unpublish revokes both status AND visibility so the
+        // poem cleanly leaves the community feed and returns to the author's
+        // private drafts.
         $userPoem->status = UserPoemStatus::Draft;
+        $userPoem->visibility = UserPoemVisibility::Private;
         $userPoem->published_at = null;
         $userPoem->save();
 
