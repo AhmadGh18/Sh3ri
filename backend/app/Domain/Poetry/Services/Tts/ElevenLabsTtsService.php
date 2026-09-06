@@ -91,9 +91,12 @@ final class ElevenLabsTtsService implements TtsProvider
             }
 
             // Classify. ElevenLabs bundles quota_exceeded under 401 with a
-            // JSON body carrying `detail.status === "quota_exceeded"`. Sniff
-            // the body cheaply so callers can differentiate.
+            // JSON body carrying `detail.status === "quota_exceeded"`. It
+            // ALSO uses HTTP 402 to mean "credits exhausted / payment
+            // required" outright, without the string marker. Both should
+            // trip the breaker; hitting the API 30 more times won't help.
             $kind = match ($response->status()) {
+                402      => 'quota_exceeded',   // Payment Required — no usable credits
                 401, 403 => 'auth',
                 429      => 'rate_limited',
                 422, 400 => 'bad_input',
@@ -106,10 +109,10 @@ final class ElevenLabsTtsService implements TtsProvider
             throw new TtsException(
                 "ElevenLabs synthesis failed (HTTP {$response->status()})",
                 statusHint: match ($response->status()) {
-                    401, 403 => 503,          // hide provider auth errors from clients
-                    422, 400 => 400,          // bad text (too long, banned content)
-                    429      => 429,          // upstream rate limit → propagate
-                    default  => 502,
+                    401, 402, 403 => 503,     // hide provider auth/quota errors from clients
+                    422, 400      => 400,     // bad text (too long, banned content)
+                    429           => 429,     // upstream rate limit → propagate
+                    default       => 502,
                 },
                 providerError: $providerError,
                 errorKind: $kind,
