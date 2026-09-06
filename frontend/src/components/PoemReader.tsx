@@ -111,57 +111,40 @@ export default function PoemReader({ poem }: { poem: PoemDetail }) {
       playAt(i + 1);
     }, 15000);
 
-    a.oncanplay = () => {
+    // Kick off playback. Extracted so we can also fire it immediately when
+    // the audio element is already ready (preloaded elements have their
+    // canplay event before we get here, and attaching oncanplay after the
+    // event has already fired misses it — which was the "only verse 1
+    // plays" symptom).
+    const kickOff = () => {
       if (!stillActive()) return;
       clearTimer();
       setProgress({ i, loading: false });
-      // canplay firing means the server ACCEPTED the request and delivered
-      // bytes — i.e. it charged the user's quota. Report so the badge
-      // decrements without waiting for the next full refresh.
       audioUsage.reportPlayed();
-      // Only NOW call play() — browsers reject early play() calls when no
-      // data is ready, which is a big source of "sometimes doesn't work".
       a.play().catch((e) => {
         if (!stillActive()) return;
         console.warn("audio.play failed:", e);
         playAt(i + 1);
       });
     };
+
+    // readyState 3 = HAVE_FUTURE_DATA, 4 = HAVE_ENOUGH_DATA. Either is enough.
+    if (a.readyState >= 3) {
+      kickOff();
+    } else {
+      a.oncanplay = kickOff;
+    }
+
     a.onended = () => { if (stillActive()) playAt(i + 1); };
-    a.onerror = async () => {
+
+    // ALWAYS advance to the next verse on error. The upgrade-modal path is
+    // gone in demo mode — every verse gets a fresh attempt regardless of
+    // why the previous one failed. Only the timeout above bounds how long
+    // we wait per verse.
+    a.onerror = () => {
       if (!stillActive()) return;
       clearTimer();
-      try {
-        const r = await fetch(audioUrl(poem.verses[i].uuid), { method: "GET", cache: "no-store" });
-        if (r.status === 402) {
-          // Per-user quota exceeded. Show the upgrade modal instead of the
-          // generic error notice — this is a different remedy (upgrade)
-          // than a server-side outage (wait).
-          const body = await r.json().catch(() => null);
-          setUpgradeReason(body?.error?.message);
-          setUpgradeOpen(true);
-          audioUsage.reportBlocked();
-          stop(); return;
-        }
-        if (r.status === 503) {
-          const body = await r.json().catch(() => null);
-          const type = String(body?.error?.type ?? "");
-          if (type === "tts_budget_reached") {
-            setNotice("انتهت الحصّة اليومية للاستماع. جرّب لاحقًا.");
-            stop(); return;
-          }
-          if (type === "tts_quota_exceeded" || type === "tts_provider_quota_exceeded") {
-            setNotice("انتهت حصّة الصوت لدى مزوّد الخدمة.");
-            stop(); return;
-          }
-          if (type === "tts_auth" || type === "tts_config"
-              || type === "tts_provider_auth" || type === "tts_provider_config") {
-            setNotice("خدمة الصوت غير مهيّأة حاليًا.");
-            stop(); return;
-          }
-        }
-      } catch { /* ignore diagnostic fetch failures */ }
-      console.warn("poem-player: verse", i, "failed, skipping");
+      console.warn("poem-player: verse", i, "failed, skipping to next");
       setNotice("تعذّر تشغيل بيت — تخطّي…");
       playAt(i + 1);
     };
