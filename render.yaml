@@ -17,7 +17,7 @@ services:
     name: sh3ri-backend
     runtime: docker
     plan: free
-    region: frankfurt              # closest free region to MENA
+    region: virginia               # match Neon's us-east-1 to kill transatlantic DB latency
     rootDir: backend               # Dockerfile lives here
     dockerfilePath: ./Dockerfile
 
