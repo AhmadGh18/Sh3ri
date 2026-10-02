@@ -179,6 +179,11 @@ export const api = {
   search: (q: string, type: "all" | "poem" | "poet" | "verse" = "all") =>
     apiFetch<SearchResult>(`/search${qs({ q, type })}`, { revalidate: 30 }),
 
+  // Community data must stay fresh so upvote/comment interactions aren't
+  // overwritten by a stale cached response on back-navigation. Vercel's
+  // Data Cache would otherwise re-render the list page with the pre-vote
+  // counts, which makes the upvote toggle appear to bounce up/down/up as
+  // the user "corrects" the stale value.
   listCommunityPoems: (opts: {
     per_page?: number;
     cursor?: string;
@@ -192,13 +197,13 @@ export const api = {
         sort: opts.sort,
         filter: opts.filter,
       })}`,
-      { revalidate: 15 },
+      { revalidate: 0 },
     ),
 
   getCommunityPoem: (uuid: string) =>
     apiFetch<{ data: CommunityPoem }>(
       `/community/user-poems/${encodeURIComponent(uuid)}`,
-      { revalidate: 15 },
+      { revalidate: 0 },
     ),
 
   listComments: (uuid: string) =>
