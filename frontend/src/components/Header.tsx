@@ -8,7 +8,6 @@ import UserMenu from "./UserMenu";
 
 const NAV = [
   { href: "/",          label: "الرئيسية" },
-  { href: "/poems",     label: "القصائد" },
   { href: "/poets",     label: "الشعراء" },
   { href: "/eras",      label: "العصور" },
   { href: "/countries", label: "البلدان" },

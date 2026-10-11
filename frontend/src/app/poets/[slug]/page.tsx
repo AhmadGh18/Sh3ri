@@ -10,8 +10,12 @@ export default async function PoetPage({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   let poet, poems;
   try {
-    poet = (await api.getPoet(slug)).data;
-    poems = (await api.getPoetPoems(slug, { per_page: 60 })).data;
+    const [poetRes, poemsRes] = await Promise.all([
+      api.getPoet(slug),
+      api.getPoetPoems(slug, { per_page: 60 }),
+    ]);
+    poet = poetRes.data;
+    poems = poemsRes.data;
   } catch {
     return notFound();
   }

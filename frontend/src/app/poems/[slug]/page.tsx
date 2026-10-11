@@ -17,7 +17,8 @@ export default async function PoemPage({ params }: { params: Promise<{ slug: str
     <main className="max-w-3xl mx-auto px-4 py-6">
       <Breadcrumbs items={[
         { href: "/", label: "الرئيسية" },
-        { href: "/poems", label: "القصائد" },
+        { href: "/poets", label: "الشعراء" },
+        ...(poem.poet ? [{ href: `/poets/${poem.poet.slug}`, label: poem.poet.name_ar }] : []),
         { label: poem.title_ar },
       ]} />
 
