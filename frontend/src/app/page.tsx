@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 /**
  * Home. Just a hero (featured verse) + the four browse tiles.
- * Latest-poems strip was removed by request — users go into /poems for that.
+ * Poems are browsed per poet (/poets/[slug]) — there is no global poems list.
  */
 export default async function Home() {
   // Fetch a small page to find the first poem with verses for the hero.
@@ -30,7 +30,6 @@ export default async function Home() {
   }
 
   const tiles = [
-    { glyph: "﴿", name: "القصائد", desc: "تصفّح آلاف القصائد",             href: "/poems"     },
     { glyph: "◆", name: "الشعراء", desc: "٥٣٨ شاعرًا من مختلف العصور",    href: "/poets"     },
     { glyph: "❦", name: "العصور",  desc: "من الجاهلية إلى الحداثة",          href: "/eras"      },
     { glyph: "⁂", name: "البلدان", desc: "شعر العرب من كلّ الأقطار",         href: "/countries" },
